@@ -1,0 +1,97 @@
+{
+    "name": "DevScene",
+
+    "time": {
+        "scale": 0,
+        "dayTime": 0.25,
+        "dayDuration": 30
+    },
+
+    "gameObjects": [
+        {
+            "name": "cam0",
+            "transform": {
+                "position": [0, 0.2, 3]
+            },
+            "components": [
+                { "_": "Camera" },
+                { "_": "Movement" }
+            ]
+        },
+        {
+            "name": "suzanne",
+            "file": "/assets/models/Suzanne.obj",
+            "transform": {
+                "position": [1, 0, 3],
+                "rotation": [-50, 180, 60],
+                "children": [
+                    "cube_001"
+                ]
+            },
+            "components": [
+                { "_": "RigidBody" }
+            ]
+        },
+        {
+            "name": "teapot",
+            "file": "/assets/models/Cube.obj",
+            "transform": {
+                "position": [0, 5, 5],
+                "scale": [2, 2, 2]
+            },
+            "components": [
+                { "_": "Sun" }
+            ]
+        },
+        {
+            "name": "cube_001",
+            "file": "/assets/models/Cube.obj",
+            "transform": {
+                "position": [-1, -0.5, 3],
+                "scale": [0.25, 0.25, 0.25]
+            }
+        },
+        {
+            "name": "cam1",
+            "transform": {
+                "position": [-3, 0.1, -1]
+            },
+            "components": [
+                { "_": "Camera" },
+                {
+                    "_": "LookAt",
+                    "target": { "&": "suzanne" }
+                }
+            ]
+        },
+        {
+            "name": "light_001",
+            "file": "/assets/models/Cube.obj",
+            "transform": {
+                "scale": [0.1, 0.1, 0.1]
+            },
+            "components": [
+                {
+                    "_": "Light",
+                    "intensity": 21
+                }
+            ]
+        },
+        {
+            "name": "light_002",
+            "file": "/assets/models/Cube.obj",
+            "transform": {
+                "scale": [0.1, 0.1, 0.1]
+            },
+            "components": [
+                {
+                    "_": "SpotLight",
+                    "intensity": 100,
+                    "angle": 15
+                }
+            ]
+        }
+    ],
+
+    "camera": "cam0"
+}
