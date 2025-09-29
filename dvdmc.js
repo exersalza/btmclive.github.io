@@ -6,7 +6,6 @@ function randint(min, max) {
 function move(image, x, y) {
     image.style.left = x + 'px';
     image.style.top = y + 'px';
-    console.log(image.style.left);
 }
 
 function changeDirection(index, value) {
