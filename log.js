@@ -1,9 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+async function setRandomLog() {
+  const url = 'https://logs.nadeko.net/channel/btmc/user/btmc/random';
+  const out = document.getElementById('randomLog');
 
-const url = 'https://logs.nadeko.net/channel/btmc/user/btmc/random';
-const out = document.getElementById('randomlog');
-
-async function getLog() {
+  out.innerHTML = "Loading...";
   try {
     const res = await fetch(url, { cache: 'no-cache' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -12,9 +11,9 @@ async function getLog() {
     console.log(out);
     console.log(out.innerHTML);
     out.innerHTML = text;
-} catch (err) {
-  out.innerHTML = 'Error getting log: ' + err.message;
+  } catch (err) {
+    out.innerHTML = 'Error getting log: ' + err.message;
+  }
 }
-}
-  getLog();
-});
+
+document.addEventListener("DOMContentLoaded", setRandomLog);
