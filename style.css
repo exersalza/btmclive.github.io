@@ -1,18 +1,23 @@
 * {
-  margin:0;
+  /* margin:0; */
   padding:0;
   text-align: center;
-  margin-right:3px;
   font-family: "Comic Sans MS", "Comic Sans", cursive;
   color: #c0caf5;
 }
+html {
+  height: -webkit-fill-available;
+}
 body {
-  padding:20px;
+  height: -webkit-fill-available;
   background-color: #1a1b26;
 }
 h1 {
   font-size:3em;
   line-height:0.7em;
+}
+#randomMsgBody h2 {
+  margin: .4em;
 }
 p {
   font-size:1em;
@@ -20,16 +25,79 @@ p {
   margin:1px;
 }
 button {
-  padding: 2px 4px;
+  padding: 4px 8px;
   border: solid 2px #565f89;
   border-radius: 4px;
   background-color: #24283b;
+  transition: ease-in-out .2s background-color;
 }
 button:hover {
   background-color: #2c3047;
+  transition: ease-in-out .2s background-color;
 }
-
+#body {
+  padding: 12px;
+  height: -webkit-fill-available;
+  display: grid;
+}
 #logo {
     position: absolute;
-    z-index:-1;
+    filter: brightness(0.5);
+    z-index:-100;
+}
+#msgButtonsContainer {
+  display: flex;
+  flex-direction: row;
+}
+#msgButtonsContainer button {
+  padding: 8px;
+  border: none;
+  width: 15em;
+  margin-bottom: 4px;
+  transition-property: width, background-color;
+}
+#msgButtonsContainer button:hover {
+  width: 17em;
+  transition-property: width, background-color;
+}
+#randomMsgBody{
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  justify-content: space-around;
+}
+#foot {
+    display: flex;
+    justify-content: center;
+    align-self: end;
+}
+.rmsgDiv {
+  display: flex; 
+  align-items: center; 
+  flex-direction: column;
+  flex: 1 1;
+}
+.logDisplay {
+  display: flex;
+  padding: 10px 12px;
+  position: relative;
+  margin: 8px 0px;
+  border-radius: 6px;
+  background-color: #14151e;
+}
+.logDisplay::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  padding: 4px;
+  border-radius: 8px;
+  background: linear-gradient(168deg, #908e8e 10%, #454589 80%),
+  linear-gradient(0deg, #FFFFFF, #FFFFFF);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -99;
 }
