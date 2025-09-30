@@ -7,26 +7,40 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <h1>Hello</h1>
-  <br>
-  <p>I am btmc :3</p>
-  <img src="https://cdn.7tv.app/emote/01GY6Y9T6G000CX7G8QSR9TRP1/4x.avif">
-  <p> </p>
-    <div class="latex4000Webring">
-      <a href="https://nonacademic.net" title="Collective">Latex 4000</a>
-      <div class="latex4000WebringButtons">
-          <a href="https://nonacademic.net/ring?action=prev&amp;from=diodex" title="Previous">←</a>
-          <a href="https://nonacademic.net/ring?action=rand&amp;from=diodex" title="Random">Random</a>
-          <a href="https://nonacademic.net/ring?action=next&amp;from=diodex" title="Next">→</a>
-      </div>
-  </div>
-  <a href="./captsiro/index.html">CaptSiro's hand made 3D rendering engine</a>
-  <div>
-    <div style="justify-content: center; display: flex; flex-direction: row;">
-      <h3 style="text-align: center">Here have a random ed message</h3>
-      <button style="text-align: center" id="newRandomLog" onclick="setRandomLog()">New Message</button>
+  <div id="body">
+    
+    <h1>Hello</h1>
+    <br>
+    <p>I am btmc :3</p>
+    <img src="https://cdn.7tv.app/emote/01GY6Y9T6G000CX7G8QSR9TRP1/4x.avif">
+    <p> </p>
+      <div class="latex4000Webring">
+        <a href="https://nonacademic.net" title="Collective">Latex 4000</a>
+        <div class="latex4000WebringButtons">
+            <a href="https://nonacademic.net/ring?action=prev&amp;from=diodex" title="Previous">←</a>
+            <a href="https://nonacademic.net/ring?action=rand&amp;from=diodex" title="Random">Random</a>
+            <a href="https://nonacademic.net/ring?action=next&amp;from=diodex" title="Next">→</a>
+        </div>
     </div>
-    <p style="text-align: center" id="randomLog">Loading...</p>
+    <a href="./captsiro/index.html">CaptSiro's hand made 3D rendering engine</a>
+    <div id="randomMsgBody">
+      <div class="rmsgDiv">
+        <h2>Here have a random ed message</h3>
+          <div id="msgButtonsContainer">
+            <button id="randomBtmcMsgButton" onclick="setRandomLog(true)">New Message</button>
+          </div>
+          <p class="logDisplay" id="randomBtmcLog">Loading...</p>
+
+      </div>
+      <div class="rmsgDiv">
+        <h2>or a random chat message in general</h2>
+        <div id="msgButtonsContainer">
+          <button id="randomMsgButton" onclick="setRandomLog(false)">New Message</button>
+        </div>
+        <p class="logDisplay" id="randomLog">...</p>
+
+      </div>
+    </div>
   </div>
 </body>
 </html>
