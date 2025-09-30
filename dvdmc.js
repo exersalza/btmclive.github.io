@@ -85,4 +85,5 @@ setInterval(() => {
 pauseButton.addEventListener('click', () => {
     isPaused = !isPaused; // toggle pause state
     pauseButton.innerText = isPaused ? 'Unpause bmc' : 'Pause bmc'; // change button text
+    pauseButton.style.backgroundColor = isPaused ? "#2b2020" : "#20212b" // change button color
 });
