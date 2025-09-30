@@ -35,7 +35,7 @@ function getLogo(url, size) {
 // constants
 const size = [300,300];
 const logo = getLogo('images/channels4_profile.jpg', size);
-
+const pauseButton = document.getElementById('pausebmcButton');
 
 let randomizeColor = true;
 
@@ -44,6 +44,7 @@ const speed = 1.0;
 // variables
 let x = randint(1, window.innerWidth - size[0] - 1);
 let y = randint(1, window.innerHeight - size[1] - 1);
+let isPaused = false; // pause state
 
 let direction = [1, 1];
 
@@ -51,31 +52,37 @@ let direction = [1, 1];
 logo.id = "logo";
 
 // add the logo to the page
-document.body.append(logo);
+document.getElementById('body').append(logo);
 
 move(logo, x, y);
 
 // main loop
 setInterval(() => {
-    // change the coords based on the direction & speed
-    x += speed * direction[0];
-    y += speed * direction[1];
-
-    // check if logo is bouncing on the left/right side
-    if (x <= 1) {
-        changeDirection(0, 1);
-    } else if (x + size[0] + 1 >= window.innerWidth) {
-        changeDirection(0, -1);
-    }
+    if (!isPaused) { // only move if it isn't paused
+        // change the coords based on the direction & speed
+        x += speed * direction[0];
+        y += speed * direction[1];
     
-    // check if logo is bouncing on the top/bottom side
-    if (y <= 1) {
-        changeDirection(1, 1);
-    } else if (y + size[1] + 1 >= window.innerHeight) {
-        changeDirection(1, -1);
-    }
-
-    // move the logo to the current X and Y coords
-    move(logo, x, y);
+        // check if logo is bouncing on the left/right side
+        if (x <= 1) {
+            changeDirection(0, 1);
+        } else if (x + size[0] + 1 >= window.innerWidth) {
+            changeDirection(0, -1);
+        }
+        
+        // check if logo is bouncing on the top/bottom side
+        if (y <= 1) {
+            changeDirection(1, 1);
+        } else if (y + size[1] + 1 >= window.innerHeight) {
+            changeDirection(1, -1);
+        }
     
+        // move the logo to the current X and Y coords
+        move(logo, x, y);
+    }
+});
+
+pauseButton.addEventListener('click', () => {
+    isPaused = !isPaused; // toggle pause state
+    pauseButton.innerText = isPaused ? 'Unpause bmc' : 'Pause bmc'; // change button text
 });
