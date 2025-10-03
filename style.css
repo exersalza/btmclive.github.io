@@ -54,17 +54,24 @@ p {
   line-height:2em;
   margin:1px;
 }
+img {
+  object-fit: cover;
+}
 button {
   font-size: medium;
   padding: 8px;
   border: solid 2px #565f89;
   border-radius: 4px;
   background-color: var(--accent-1);
-  transition: ease-in-out .2s background-color;
+  transition: ease-in-out .2s background-color, transform;
 }
 button:hover {
   background-color: var(--accent-1-hover);
   transition: ease-in-out .2s background-color;
+}
+button:active {
+  transform: scale(0.95);
+  transition: ease-in-out .05s transform;
 }
 a.linkButton {
   font-size: medium;
@@ -86,11 +93,14 @@ a.linkButton:hover {
   text-align: center;
   align-items: start;
   align-content: stretch;
+  justify-content: center;
+  justify-items: stretch;
   min-height: 70vh;
   gap: 3em;
 }
 .body-section {
   min-height: 10vh;
+  width: 150vh;
   border-radius: 8px;
   border: #565f89 2px solid;
   padding: 20px;
@@ -109,11 +119,11 @@ a.linkButton:hover {
   border: none;
   width: 15em;
   margin-bottom: 4px;
-  transition-property: width, background-color;
+  transition-property: width, background-color, transform;
 }
 #msgButtonsContainer button:hover {
   width: 17em;
-  transition-property: width, background-color;
+  transition-property: width, background-color, transform;
 }
 #randomMsgBody{
   display: flex;
@@ -129,6 +139,7 @@ a.linkButton:hover {
     position: fixed;
     right: 10px;
     bottom: 10px;
+    z-index: 5;
 }
 .rmsgDiv {
   display: flex; 
@@ -164,9 +175,16 @@ a.linkButton:hover {
   mask-composite: exclude;
   z-index: 1;
 }
+.horiz-divider {
+  background: white;
+  width: 10px;
+  height: 4px;
+  border-radius: 20px;
+}
 .linkicon {
   display: flex;
   align-items: center;
+  place-content: center;
   height: 20px;
   width: 20px;
 }
@@ -179,7 +197,7 @@ a.linkButton:hover {
   flex-direction: row;
   align-items: center;
   padding: 4px;
-  gap: 1.25em;
+  gap: 1.1em;
   justify-content: center;
   align-self: flex-end;
   transition: all 0.3s;
@@ -246,22 +264,25 @@ a.linkButton:hover {
   padding: 10px 16px;
   border: none;
   width: initial;
-  transition-duration: 0.4s;
-  transition-property: all;
-  transition-timing-function: ease;
+  transition: ease 0.3s all;
   background-color: transparent;
 }
 .NavBar-wrap button:hover, .DDButton:hover {
   color: rgb(255, 255, 255);
-  transition-duration: 0.4s;
-  transition-property: all;
+  transition: ease .3s all;
   background-color: var(--accent-1-hover);
+}
+.NavBar-wrap button:active {
+  transition: ease 0.05s all;
 }
 .NavBar-wrap button.active {
   background-color: var(--accent-2);
   color: var(--accent-3);
   text-decoration: none;
   cursor: default;
+}
+.NavBar-wrap button.active:hover {
+  color: white;
 }
 .NavBar-pages a {
   color: rgb(255, 255, 255);

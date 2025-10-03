@@ -1,14 +1,14 @@
+// create a box-shadow around an svg with the color based on the svg's color
 window.addEventListener("DOMContentLoaded", (event) => {
-    // premise is to create a box-shadow around an svg based with the color based on the svg's color
     setTimeout(function(){
     const el = document.getElementsByClassName('linkicon'); // el = element
 
-    for (var i = 0; i < el.length; i++) {
+    for (let i = 0; i < el.length; i++) {
         el[i].addEventListener("mouseover", function(event) {
             colored(event);
         });
     }
-    for (var i = 0; i < el.length; i++) {
+    for (let i = 0; i < el.length; i++) {
         el[i].addEventListener("mouseout", function(event) {
             uncolored(event);
         });
@@ -31,14 +31,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
         // in case the svg doesn't have an rgb value
         if (!chFill.includes("rgb")) {
             const qlComp = window.getComputedStyle(qlEl);
-            const chColor = qlComp.getPropertyValue('lighting-color'); // use its lighting-color set manually
+            const chColor = qlComp.getPropertyValue('lighting-color'); // use .linkicon's lighting-color set manually
             qlChild.style.boxShadow = `0px 0px 20px 1px ${chColor}, inset 0px 0px 10px 0px ${chColor}`;
         } else if (chFill.includes("none")) {
             const chColor = pathFill.getPropertyValue('stroke-color');
             qlChild.style.boxShadow = `0px 0px 20px 1px ${chColor}, inset 0px 0px 10px 0px ${chColor}`;
         } 
-            
-        
     }
     
     function uncolored(event) {
