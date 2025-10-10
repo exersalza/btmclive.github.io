@@ -2,8 +2,8 @@
 
 <html>
 <head>
-  <script src="log.js"></script>
-  <script src="dvdmc.js" defer></script> 
+  <script src="scripts/log.js"></script>
+  <script src="scripts/dvdmc.js" defer></script> 
   <script src="scripts/nav.js"></script>
   <script src="scripts/load-nav.js"></script>
   <link rel="stylesheet" href="style.css"/>
@@ -31,14 +31,14 @@
           <div id="msgButtonsContainer">
             <button id="randomBtmcMsgButton" onclick="setRandomLog(true)">New Message</button>
           </div>
-          <p class="logDisplay gradient-border" id="randomBtmcLog">Loading...</p>
+          <p class="fetchDisplay gradient-border" id="randomBtmcLog">Loading...</p>
       </div>
       <div class="rmsgDiv">
         <h2>or a random chat message in general</h2>
         <div id="msgButtonsContainer">
           <button id="randomMsgButton" onclick="setRandomLog(false)">New Message</button>
         </div>
-        <p class="logDisplay gradient-border" id="randomLog">...</p>
+        <p class="fetchDisplay gradient-border" id="randomLog">...</p>
       </div>
     </div>
   </div>
