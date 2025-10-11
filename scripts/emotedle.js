@@ -200,6 +200,9 @@ function share() {
     copybtn.addEventListener("click", function () {
         navigator.clipboard.writeText(shareString.replaceAll(',', ''));
         copybtn.style.backgroundColor = "#194d33";
+        setTimeout(() => {
+            copybtn.style.backgroundColor = "";
+        }, 2000);
     })
 }
 
