@@ -231,7 +231,7 @@ function share() {
     console.log(previousResults)
     document.getElementById('button-container').innerHTML = `<button id="cbtn">Share</button>`;
     const copybtn = document.getElementById('cbtn');
-    shareString = `Emotedle #${dateDiff} ${previousResults}`;
+    shareString = `Emotedle #${dateDiff} ${previousResults} https://btmclive.github.io/emotedle`;
     copybtn.addEventListener("click", function () {
         navigator.clipboard.writeText(shareString.replaceAll(',', ''));
         copybtn.style.backgroundColor = "#194d33";
