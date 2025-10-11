@@ -1,27 +1,32 @@
 // -- constants -- //
 const max_attempts = 5;
-const day = new Date().toDateString(); // current date
+const curDateObj = new Date() // current date
+const startDateObj = new Date(2025, 10, 11)// start counting from this day
+const day = curDateObj.toDateString();
+const dateDiff = new Date(startDateObj.getTime() - curDateObj.getTime()).getUTCDate();
 const url = "https://osu-rust-api.onrender.com/random/emote/";
 const answer = "https://osu-rust-api.onrender.com/real/emotename";
 
 // -- variable -- //
 let attempt = 0;
 let previousGuesses = [];
+let previousResults = [];
 let realname;
 let guess;
-
 // -- html elements -- //
 let table; // table element
 let guesstable = `<tr><th>Attempt</th><th>Guess</th></tr>`; // table data/text
 let button; // guess submit button
+let input; // guess input
 
+let shareString = `Emotedle #${dateDiff} `; // share string
 
 window.addEventListener("DOMContentLoaded", () => {
     const result = document.getElementById('guess-result');
     button = document.getElementById('submit-button');
     table = document.getElementById('guess-table');
+    input = document.getElementById('guess-input')
     const emoteout = document.getElementById('emote-display');
-    const input = document.getElementById('guess-input');
     
     
     if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked
@@ -38,7 +43,7 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("can't access localStorage, moving on with session");
     }
-    
+
     fetchEmote();
     
     function guessinp() {
@@ -70,9 +75,8 @@ window.addEventListener("DOMContentLoaded", () => {
     
     function getAttempts() {
         var state = JSON.parse(localStorage.getItem("emotedle")) || {};
-        console.log(day);
         if (state.date === day) {
-            console.log(state.attempt);
+            // console.log(state.attempt);
             attempt = state.attempt;
             previousGuesses = state.previousGuesses;
         }
@@ -83,7 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("emotedle", JSON.stringify(
                 { date: day, attempt, previousGuesses: previousGuesses }
             ))
-            console.log(localStorage.getItem("emotedle"))
+            // console.log(localStorage.getItem("emotedle"))
         } else {
             console.log("unable to save")
         }
@@ -111,28 +115,31 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     
     function handleAttempt(guess) {
-        console.log(attempt);
-        if (attempt + 1 >= max_attempts) {
+        attempt++;
+        let resultTextFormat = `Attempt: ${attempt}/${max_attempts} | `;
+        if (guess == realname) {
             previousGuesses.push(guess);
-            attempt++;
+            previousResults.push('🟩 ');
+            result.innerHTML = resultTextFormat + "You got it right.";
+            disableInput();
+            share();
+            // setTimeout(() => {
+                fetchFullEmote();
+            // }, 1000);
+            return
+        } else if (attempt >= max_attempts) {
+            previousGuesses.push(guess);
+            previousResults.push('🟥 ')
             result.innerHTML = "You have no attempts left. (5/5)";
             disableInput();
             fetchFullEmote();
+            share();
         } else {
+            // attempt++;
             previousGuesses.push(guess);
-            attempt++;
-            fetchEmote();
-            if (guess == realname) {
-                attempt++
-                previousGuesses.push(guess);
-                result.innerHTML = "You got it right.";
-                disableInput();
-                fetchFullEmote();
-                return
-            } else {
-                let resultTextFormat = `Attempt: ${attempt}/${max_attempts} | `;
+                fetchEmote();
                 result.innerHTML = resultTextFormat + "Incorrect!";
-            }
+                previousResults.push('🟥 ')
             return
         }
         
@@ -156,15 +163,16 @@ function disableInput() {
     button.setAttribute('disabled', '');
     button.classList.add("disabled")
     setTimeout(function () {
-        document.getElementById('guess-input').classList.add("disabled");
-        document.getElementById('guess-input').setAttribute('disabled', '');
+        input.classList.add("disabled");
+        input.setAttribute('disabled', '');
     }, 1000);
 }
 function enableInput() {
     button.removeAttribute('disabled');
     button.classList.remove("disabled")
-    document.getElementById('guess-input').classList.remove("disabled");
-    document.getElementById('guess-input').removeAttribute('disabled');
+    input.classList.remove("disabled");
+    input.removeAttribute('disabled');
+    input.focus();
 }
 function handleTable() {
     guesstable += "<table><tr><td>#" + (attempt) + "</td><td>" + previousGuesses[attempt-1] + "</td></tr></table>";
@@ -183,24 +191,34 @@ async function fetchEmoteName() {
         return err
     }
 }
-document.addEventListener("DOMContentLoaded", fetchEmoteName())
 
+function share() {
+    const copybtn = document.createElement('button');
+    document.getElementById('button-container').appendChild(copybtn);
+    copybtn.innerHTML = "Share";
+    shareString += previousResults;
+    copybtn.addEventListener("click", function () {
+        navigator.clipboard.writeText(shareString.replaceAll(',', ''));
+        copybtn.style.backgroundColor = "#194d33";
+    })
+}
 
 function storageAvailable(type) {
     let storage;
     try {
-      storage = window[type];
-      const x = "__storage_test__";
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
+        storage = window[type];
+        const x = "__storage_test__";
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
     } catch (e) {
       return (
-        e instanceof DOMException &&
-        e.name === "QuotaExceededError" &&
-        // acknowledge QuotaExceededError only if there's something already stored
-        storage &&
-        storage.length !== 0
-      );
+          e instanceof DOMException &&
+          e.name === "QuotaExceededError" &&
+          // acknowledge QuotaExceededError only if there's something already stored
+          storage &&
+          storage.length !== 0
+        );
     }
 }
+    document.addEventListener("DOMContentLoaded", fetchEmoteName())
