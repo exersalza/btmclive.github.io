@@ -1,3 +1,13 @@
+@media screen and (width <= 1100px) {
+  .body-section {
+    width: 75vh !important;
+  }
+}
+@media screen and (width <= 750px) {
+  .body-section {
+    width: auto !important;
+  }
+}
 /* @font-face {
   font-family: 'JetBrainsMono';
   font-style: normal;
@@ -170,8 +180,8 @@ a.linkButton:hover {
   transition: ease-in-out .2s;
 }
 #emote-display {
-  height: 128px;
-  width: 128px;
+  height: 256px;
+  width: 256px;
   justify-content: center;
   align-items: center;
   flex-direction: column;

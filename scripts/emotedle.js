@@ -95,13 +95,17 @@ window.addEventListener("DOMContentLoaded", () => {
     
     async function fetchEmote() {
         disableInput()
+        let img = new Image();
         let tmp = document.createElement('p');
         document.getElementById('emote-display').appendChild(tmp).innerHTML = "Loading..";
         const res = await fetch(url+attempt, { cache: 'no-cache' });
         try {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
-            document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}">`;
+            img.src = e
+            img.onload = function () {
+                document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 2}px">`;
+            }
             enableInput();
         } catch (err) {
             console.error(err.message);
@@ -111,7 +115,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function fetchFullEmote() {
         let e = url + max_attempts;
-        document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}">`;
+        let img = new Image();
+        img.src = e;
+        img.onload = function () {
+            document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
+        }
     }
     
     function handleAttempt(guess) {
