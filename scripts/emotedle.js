@@ -1,9 +1,9 @@
 // -- constants -- //
 const max_attempts = 5;
 const curDateObj = new Date() // current date
-const startDateObj = new Date(2025, 10, 11)// start counting from this day
+const startDateObj = new Date("2025, 10, 10")// start counting from this day
 const day = curDateObj.toDateString();
-const dateDiff = new Date(startDateObj.getTime() - curDateObj.getTime()).getUTCDate();
+const dateDiff = new Date(startDateObj.getTime() - curDateObj.getTime()).getUTCDay()-1;
 const url = "https://osu-rust-api.onrender.com/random/emote/";
 const answer = "https://osu-rust-api.onrender.com/real/emotename";
 
@@ -13,13 +13,15 @@ let previousGuesses = [];
 let previousResults = [];
 let realname;
 let guess;
+let finished = false;
+
 // -- html elements -- //
 let table; // table element
 let guesstable = `<tr><th>Attempt</th><th>Guess</th></tr>`; // table data/text
 let button; // guess submit button
 let input; // guess input
 
-let shareString = `Emotedle #${dateDiff} `; // share string
+let shareString; // share string
 
 
 const getEmote = (miss) => {
@@ -44,12 +46,14 @@ window.addEventListener("DOMContentLoaded", () => {
     table = document.getElementById('guess-table');
     input = document.getElementById('guess-input')
     const emoteout = document.getElementById('emote-display');
-
-
-    if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .... me too
-        getAttempts();
+    
+    if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .. me too
+        getDataStore();
         if (attempt >= max_attempts) {
             handleAttempt(guess);
+        } else if (finished) {
+            result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
+            complete();
         } else {
             result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
         }
@@ -60,15 +64,15 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("can't access localStorage, moving on with session");
     }
-
-    fetchEmote();
-
+    if (!finished) {
+        fetchEmote();
+    }
+    
     function guessinp() {
         guess = input.value.toLowerCase();
         // invalid guesses
         function checkValid() {
             if (attempt >= max_attempts) {
-                // result.innerHTML = "You have no attempts left. (7/7)";
                 handleAttempt(guess);
                 return false
             } else if (previousGuesses.includes(guess)) {
@@ -87,24 +91,25 @@ window.addEventListener("DOMContentLoaded", () => {
         handleAttempt(guess);
         handleTable();
         updateState();
-    }
-
-
-    function getAttempts() {
+    }    
+    
+    function getDataStore() {
         var state = JSON.parse(localStorage.getItem("emotedle")) || {};
         if (state.date === day) {
-            // console.log(state.attempt);
             attempt = state.attempt;
             previousGuesses = state.previousGuesses;
+            previousResults = state.previousResults;
+            finished = state.completed;
         }
+        console.log(state)
     }
 
     function updateState() {
         if (storageAvailable("localStorage")) {
             localStorage.setItem("emotedle", JSON.stringify(
-                { date: day, attempt, previousGuesses: previousGuesses }
+                { date: day, attempt, previousGuesses: previousGuesses , previousResults: previousResults, completed: finished }
             ))
-            // console.log(localStorage.getItem("emotedle"))
+            console.log(localStorage.getItem("emotedle"))
         } else {
             console.log("unable to save")
         }
@@ -140,35 +145,32 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleAttempt(guess) {
+        if (guess == null) {
+            resultTextFormat = `Attempt: ${attempt}/${max_attempts}`;
+            result.innerHTML = resultTextFormat;
+            complete()
+            return
+        }
         attempt++;
-        let resultTextFormat = `Attempt: ${attempt}/${max_attempts} | `;
         if (guess == realname) {
             previousGuesses.push(guess);
             previousResults.push(getEmote(false));
             result.innerHTML = resultTextFormat + "You got it right.";
-            disableInput();
-            share();
-            // setTimeout(() => {
-                fetchFullEmote();
-            // }, 1000);
+            complete();
             return
         } else if (attempt >= max_attempts) {
             previousGuesses.push(guess);
             previousResults.push(getEmote(true))
             result.innerHTML = "You have no attempts left. (5/5)";
-            disableInput();
-            fetchFullEmote();
-            share();
+            complete();
         } else {
-            // attempt++;
+            let resultTextFormat = `Attempt: ${attempt}/${max_attempts} | `;
             previousGuesses.push(guess);
             fetchEmote();
             result.innerHTML = resultTextFormat + "Incorrect!";
             previousResults.push(getEmote(true))
-
             return
         }
-
     }
 
     button.addEventListener('click', guessinp);
@@ -181,6 +183,13 @@ window.addEventListener("DOMContentLoaded", () => {
         button.click();
     })
 
+    function complete() {
+        finished = true
+        disableInput();
+        fetchFullEmote();
+        share();
+    }
+
 
     // ----- end -----
 });
@@ -188,9 +197,9 @@ window.addEventListener("DOMContentLoaded", () => {
 function disableInput() {
     button.setAttribute('disabled', '');
     button.classList.add("disabled")
-    setTimeout(function() {
+    input.setAttribute('disabled', '');
+    setTimeout(function () {
         input.classList.add("disabled");
-        input.setAttribute('disabled', '');
     }, 1000);
 }
 function enableInput() {
@@ -219,11 +228,11 @@ async function fetchEmoteName() {
 }
 
 function share() {
-    const copybtn = document.createElement('button');
-    document.getElementById('button-container').appendChild(copybtn);
-    copybtn.innerHTML = "Share";
-    shareString += previousResults;
-    copybtn.addEventListener("click", function() {
+    console.log(previousResults)
+    document.getElementById('button-container').innerHTML = `<button id="cbtn">Share</button>`;
+    const copybtn = document.getElementById('cbtn');
+    shareString = `Emotedle #${dateDiff} ${previousResults}`;
+    copybtn.addEventListener("click", function () {
         navigator.clipboard.writeText(shareString.replaceAll(',', ''));
         copybtn.style.backgroundColor = "#194d33";
         setTimeout(() => {
