@@ -283,7 +283,7 @@ a.linkButton:hover {
   height: 40px;
   display: flex;
   position: sticky;
-  z-index: 3;
+  z-index: 101;
   margin-bottom: 2vh;
 }
 .NavBar-wrap > div {
