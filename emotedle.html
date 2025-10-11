@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emotedle - BTMC</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/load-nav.js"></script>
+    <script src="scripts/emotedle.js"></script>
+</head>
+
+<body>
+    <div class="NavBar-wrap"></div>
+    <h1>BTMCEmotedle</h1>
+    <div class="body">
+        <div class="body-section" style="display: flex;flex-direction: column;gap: 1em;align-items: center;">
+            <h2>Guess the emote</h2>
+            <div id="emote-display" class="fetchDisplay gradient-border">
+            </div>
+            <form id="input-form" action="">
+                <input id="guess-input" required type="string">
+            </form>
+            <div id="button-container">
+                <button id="submit-button">Submit</button>
+            </div>
+            <div id="guess-result">
+                Attempt: 0/5
+            </div>
+            <div id="guess-history">
+                <table id="guess-table">
+                    <tr>
+                        <th>Attempt</th>
+                        <th>Guess</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="body-section">
+            <h2>How To Play</h2>
+            <p>Use the given area of the emote to guess the name of the emote from Ed's chat (7tv emotes only for now). Area increases per attempt.</p>
+        </div>
+    </div>
+</body>
+
+</html>

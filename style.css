@@ -1,15 +1,56 @@
+@media screen and (width <= 1100px) {
+  .body-section {
+    width: 75vh !important;
+  }
+}
+@media screen and (width <= 750px) {
+  .body-section {
+    width: auto !important;
+  }
+}
+/* @font-face {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  src: url(/assets/fonts/JetBrainsMono-Regular.woff2) format('woff2');
+} */
+@keyframes FadeIn_rev {
+  from {translate: 0px -50px; opacity: 0;} 
+  to {translate: 0px 0px; opacity: 1;}
+}
+:root {
+  --accent-1: #24283b;
+  --accent-1-hover: #2c3047;
+  --accent-2: #352f69;
+  --accent-2-hover: #342e65;
+  --accent-3: #d5c8ff;
+  --accent-disabled: #23252e;
+}
 * {
-  /* margin:0; */
   padding:0;
   text-align: center;
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  font-family: "Comic Sans MS", "Comic Sans", "Noto Sans";
   color: #c0caf5;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(77,71,109,35%);
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(77,71,109,55%);
+  transition: all .5s ease-in-out;
 }
 html {
-  height: -webkit-fill-available;
+  height: 100%;
 }
 body {
-  height: -webkit-fill-available;
+  margin: 8px;
   background-color: #1a1b26;
 }
 h1 {
@@ -24,21 +65,66 @@ p {
   line-height:2em;
   margin:1px;
 }
+img {
+  object-fit: cover;
+}
+td, th {
+  padding: 8px;
+  background: var(--accent-1-hover);
+  border-radius: 4px;
+}
 button {
-  padding: 4px 8px;
+  font-size: medium;
+  padding: 8px;
   border: solid 2px #565f89;
   border-radius: 4px;
-  background-color: #24283b;
-  transition: ease-in-out .2s background-color;
+  background-color: var(--accent-1);
+  transition: ease-in-out .2s background-color, transform;
 }
 button:hover {
-  background-color: #2c3047;
+  background-color: var(--accent-1-hover);
   transition: ease-in-out .2s background-color;
 }
-#body {
-  padding: 12px;
-  height: -webkit-fill-available;
+button:active {
+  transform: scale(0.95);
+  transition: ease-in-out .05s transform;
+}
+.disabled, .disabled:hover, .disabled:active{
+  background-color: var(--accent-disabled) !important;
+  transform: scale(1) !important;
+  cursor: not-allowed;
+}
+a.linkButton {
+  font-size: medium;
+  padding: 8px;
+  border: solid 2px #565f89;
+  border-radius: 4px;
+  background-color: var(--accent-1);
+  transition: ease-in-out .2s background-color;
+  text-decoration: none;
+  /* height: 2.5em; */
+}
+a.linkButton:hover {
+  background-color: var(--accent-1-hover);
+  transition: ease-in-out .2s background-color;
+}
+.body {
   display: grid;
+  padding: 12px;
+  text-align: center;
+  align-items: start;
+  align-content: stretch;
+  justify-content: center;
+  justify-items: stretch;
+  min-height: 70vh;
+  gap: 3em;
+}
+.body-section {
+  min-height: 10vh;
+  width: 150vh;
+  border-radius: 8px;
+  border: #565f89 2px solid;
+  padding: 20px;
 }
 #logo {
     position: absolute;
@@ -54,22 +140,54 @@ button:hover {
   border: none;
   width: 15em;
   margin-bottom: 4px;
-  transition-property: width, background-color;
+  transition-property: width, background-color, transform;
 }
 #msgButtonsContainer button:hover {
   width: 17em;
-  transition-property: width, background-color;
+  transition-property: width, background-color, transform;
 }
 #randomMsgBody{
   display: flex;
-  align-items: stretch;
   flex-direction: row;
+  align-items: center;
   justify-content: space-around;
+  gap: 1em;
 }
 #foot {
     display: flex;
-    justify-content: center;
-    align-self: end;
+    gap: 1em;
+    align-items: center;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 5;
+}
+#guess-input {
+  font-size: medium;
+  padding: 8px;
+  border: solid 2px #565f89;
+  border-radius: 4px;
+  background-color: var(--accent-1);
+  transition: ease-in-out .2s background-color, transform;
+}
+#guess-input:hover {
+  background-color: var(--accent-1-hover);
+  transition: ease-in-out .2s background-color;
+}
+#guess-input:focus-visible {
+  outline: 3px inset;
+  background-color: var(--accent-2-hover);
+  transition: ease-in-out .2s;
+}
+#emote-display {
+  height: 256px;
+  width: 256px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#emote-image {
+  object-fit: contain;
 }
 .rmsgDiv {
   display: flex; 
@@ -77,19 +195,23 @@ button:hover {
   flex-direction: column;
   flex: 1 1;
 }
-.logDisplay {
+.fetchDisplay {
   display: flex;
   padding: 10px 12px;
-  position: relative;
   margin: 8px 0px;
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: #14151e;
+  /* font-family: "JetBrainsMono"; doesn't work i cba to fix rn*/
 }
-.logDisplay::after {
+.gradient-border {
+  border: none;
+  position: relative;
+}
+.gradient-border::after {
   content: "";
   position: absolute;
-  inset: -3px;
-  padding: 4px;
+  inset: 0;
+  padding: 3px;
   border-radius: 8px;
   background: linear-gradient(168deg, #908e8e 10%, #454589 80%),
   linear-gradient(0deg, #FFFFFF, #FFFFFF);
@@ -99,5 +221,193 @@ button:hover {
       linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  z-index: -99;
+  z-index: 1;
+}
+.horiz-divider {
+  background: white;
+  width: 10px;
+  height: 4px;
+  border-radius: 20px;
+}
+.linkicon {
+  display: flex;
+  align-items: center;
+  place-content: center;
+  height: 20px;
+  width: 20px;
+}
+.iconButton {
+  display: flex;
+  align-items: center;
+}
+.quicklinks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px;
+  gap: 1.1em;
+  justify-content: center;
+  align-self: flex-end;
+  transition: all 0.3s;
+}
+.quicklinks a {
+  filter: brightness(1);
+  transition: all 0.3s;
+}
+.quicklinks a:hover {
+  filter: brightness(1.4);
+  transform: scale(1.15);
+  transition: all 0.3s;
+}
+.quicklinks .linkicon {
+  transition: all 0.3s;
+}
+.quicklinks:has(.linkicon:hover) .linkicon:not(:hover) {
+  filter: grayscale(1) contrast(.8);
+  transform: scale(0.85);
+  transition: all 0.3s;
+}
+.quicklinks a[href*="github.com"] .linkicon {
+  filter: contrast(0.5);
+}
+.quicklinks:has(.linkicon:hover)  a[href*="github.com"] .linkicon:not(:hover) {
+  filter: contrast(0.25) !important;
+}
+
+/* navbar */
+.NavBar-wrap {
+  box-sizing: unset !important;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 100%;
+  height: 40px;
+  display: flex;
+  position: sticky;
+  z-index: 3;
+  margin-bottom: 2vh;
+}
+.NavBar-wrap > div {
+  animation: FadeIn_rev 0.8s;
+}
+.NavBar-title {
+  background-color: var(--accent-1);
+  position: fixed;
+  height: fit-content;
+  border-radius: 8px;
+  z-index: 3;
+  display: flex;
+}
+.NavBar-pages {
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--accent-1);
+  backdrop-filter: blur(4px);
+  position: fixed;
+  right: 10px;
+  border-radius: 8px;
+  height: fit-content;
+  z-index: 3;
+}
+.NavBar-wrap button {
+  border-radius: 8px;
+  padding: 10px 16px;
+  border: none;
+  width: initial;
+  transition: ease 0.3s all;
+  background-color: transparent;
+}
+.NavBar-wrap button:hover, .DDButton:hover {
+  color: rgb(255, 255, 255);
+  transition: ease .3s all;
+  background-color: var(--accent-1-hover);
+}
+.NavBar-wrap button:active {
+  transition: ease 0.05s all;
+}
+.NavBar-wrap button.active {
+  background-color: var(--accent-2);
+  color: var(--accent-3);
+  text-decoration: none;
+  cursor: default;
+}
+.NavBar-wrap button.active:hover {
+  color: white;
+}
+.NavBar-pages a {
+  color: rgb(255, 255, 255);
+  padding: 12px 15px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 6px;
+  transition-duration: 0.4s;
+}
+.NavBar-pages a:hover {
+  background-color: var(--accent-1-hover);
+  border-radius: 10px;
+  transition-duration: 0.4s;
+}
+.active {
+  background-color: var(--accent-2);
+  text-decoration: none;
+  cursor: default;
+}
+.DD {
+  position: relative;
+  display: inline-block;
+  border-radius: 12px;
+}
+.DDButton {
+  border-radius: 0px;
+  width: auto;
+  padding: 12px 15px;
+  text-align: center;
+  transition-duration: 0.4s;
+  transition-property: all;
+  transition-timing-function: ease;
+  z-index: inherit;
+}
+.DDButton:hover {
+  border-radius: 0px;
+  width: auto;
+  transition-duration: 0.4s;
+  background-color: rgba(248, 54, 255, .5);
+}
+.DDButton:active {
+  background-color: rgb(194, 0, 201);
+}
+.DDContent {
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  display: none;
+  margin-left: -3px;
+  width: 150px;
+  transition: opacity 0.4s;
+  border-radius: 12px;
+}
+.DDContent a {
+  float: none;
+  display: block;
+  border-radius: 12px;
+  padding: 12px 15px;
+  width: 150px;
+  z-index: 4;
+  min-width: 70px;
+  text-decoration: none;
+}
+.DDContent a.active {
+  background-color: rgb(194, 0, 201);
+  text-align: center;
+  text-decoration: none;
+}
+.about-h2 {
+  position: relative;
+  border-radius: 8px;
+  padding: 4px 8px;
+  max-width: max-content;
+  text-align: left;
+  margin: 0;
+  left: 80px;
+  top: -38px;
+  background: #1a1b26;
+  z-index: 3;
 }

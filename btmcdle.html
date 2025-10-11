@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BTMCdle - BTMC</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/load-nav.js"></script>
+    <script src="scripts/btmcdle.js"></script>
+</head>
+
+<body>
+    <div class="NavBar-wrap"></div>
+    <h1>BTMCaccdle [unfinished]</h1>
+    <p>play <a href="emotedle">emotedle</a> instead</p>
+    <div class="body">
+        <div class="body-section" style="display: flex;flex-direction: column;gap: 1em;align-items: center;">
+            <h2>Guess the accuracy</h2>
+            <p id="map-display" class="fetchDisplay gradient-border">Fetching..</p>
+            <form id="input-form" action="">
+                <input id="guess-input" required type="number" max="100" min="0" step=".1">
+            </form>
+            <button id="submit-button">Submit</button>
+            <div id="guess-result">
+                Attempt: 0/7
+            </div>
+            <div id="guess-history">
+                <table id="guess-table">
+                    <tr>
+                        <th>Attempt</th>
+                        <th>Result</th>
+                        <th>Hint</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="body-section">
+            <h2>How To Play</h2>
+            <p>Use the context of the given play, ed's btmcAcc, and maybe your own knowledge in order to guess the integer rounded accuracy of the play. All scores are within his top 200 plays. Maybe this will expand later but it's just to keep it simple rn.</p>
+        </div>
+    </div>
+</body>
+
+</html>
