@@ -46,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const emoteout = document.getElementById('emote-display');
 
 
-    if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked
+    if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .... me too
         getAttempts();
         if (attempt >= max_attempts) {
             handleAttempt(guess);
@@ -141,7 +141,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function handleAttempt(guess) {
         attempt++;
-        console.log(getEmote(false))
         let resultTextFormat = `Attempt: ${attempt}/${max_attempts} | `;
         if (guess == realname) {
             previousGuesses.push(guess);
