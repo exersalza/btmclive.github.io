@@ -127,8 +127,8 @@ window.addEventListener("DOMContentLoaded", () => {
             img.src = e
             img.onload = function() {
                 document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 2}px">`;
+                enableInput();
             }
-            enableInput();
         } catch (err) {
             console.error(err.message);
             emoteout.innerHTML = 'Error getting emote: ' + err.message;
