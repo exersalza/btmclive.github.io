@@ -6,8 +6,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
             // only highlight title button if it's at the root directory
             if (currentPath === "/") {
-                const titleButton = document.querySelector("body > div.NavBar-wrap > div.NavBar-title")
-                titleButton.classList.add('active');
+                const homeButton = document.querySelector("body > div.NavBar-wrap > div.NavBar-title > button:first-child")
+                homeButton.classList.add('active');
                 return;
             }
             
