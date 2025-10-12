@@ -1,9 +1,11 @@
 // -- constants -- //
 const max_attempts = 5;
-const curDateObj = new Date() // current date
 const startDateObj = new Date("2025, 10, 10")// start counting from this day
+const curDateObj = new Date() // current date
+const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMonth(), curDateObj.getUTCDate());
+const utcStartMidnight = Date.UTC(startDateObj.getUTCFullYear(), startDateObj.getUTCMonth(), startDateObj.getUTCDate());
 const day = curDateObj.toDateString();
-const dateDiff = new Date(startDateObj.getTime() - curDateObj.getTime()).getUTCDay()-1;
+const dateDiff = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000));
 const url = "https://osu-rust-api.onrender.com/random/emote/";
 const answer = "https://osu-rust-api.onrender.com/real/emotename";
 
@@ -22,7 +24,6 @@ let button; // guess submit button
 let input; // guess input
 
 let shareString; // share string
-
 
 const getEmote = (miss) => {
     //                          months are 0 based in js
@@ -101,7 +102,6 @@ window.addEventListener("DOMContentLoaded", () => {
             previousResults = state.previousResults;
             finished = state.completed;
         }
-        console.log(state)
     }
 
     function updateState() {
@@ -228,7 +228,6 @@ async function fetchEmoteName() {
 }
 
 function share() {
-    console.log(previousResults)
     document.getElementById('button-container').innerHTML = `<button id="cbtn">Share</button>`;
     const copybtn = document.getElementById('cbtn');
     shareString = `Emotedle #${dateDiff} ${previousResults} https://btmclive.github.io/emotedle`;

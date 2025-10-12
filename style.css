@@ -181,7 +181,8 @@ a.linkButton:hover {
 }
 #emote-display {
   height: 256px;
-  width: 256px;
+  width: auto;
+  min-width: 256px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
