@@ -27,18 +27,28 @@ let shareString; // share string
 
 const getEmote = (miss) => {
     //                          months are 0 based in js
-    if (new Date().getMonth() == 9) {
-        if (miss) {
-            return '\u{1F383}'; // 🎃
-        }
-        return '\u{1F47D}'; // 👽
+    switch (curDateObj.getMonth()) {
+        case 9: // oct
+            if (miss) {
+                return '\u{1F383}'; // 🎃
+            }
+            return '\u{1F47D}'; // 👽
+        case 10: // nov
+            if (miss) {
+                return '\u{1F7E5}'; // 🟥 // red
+            }
+            return '\u{1F357}'; // 🍗
+        case 11: // dec
+            if (miss) {
+                return '\u{1FAA8}'; // 🪨
+            }
+            return '\u{2603}' // ☃️
+        default: 
+            if (miss) {
+                return '\u{1F7E5}'; // 🟥 // red
+            }
+            return '\u{1F7E9}'; // 🟩 // green
     }
-
-    if (miss) {
-        return '\u{1F7E5}'; // 🟥
-    }
-
-    return '\u{1F7E9}'; // 🟩
 }
 
 window.addEventListener("DOMContentLoaded", () => {
