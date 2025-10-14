@@ -1,6 +1,6 @@
 // -- constants -- //
 const max_attempts = 5;
-const startDateObj = new Date("2025, 10, 10")// start counting from this day
+const startDateObj = new Date("2025-10-10")// start counting from this day
 const curDateObj = new Date() // current date
 const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMonth(), curDateObj.getUTCDate());
 const utcStartMidnight = Date.UTC(startDateObj.getUTCFullYear(), startDateObj.getUTCMonth(), startDateObj.getUTCDate());
@@ -43,7 +43,7 @@ const getEmote = (miss) => {
                 return '\u{1FAA8}'; // 🪨
             }
             return '\u{2603}' // ☃️
-        default: 
+        default:
             if (miss) {
                 return '\u{1F7E5}'; // 🟥 // red
             }
@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", () => {
     table = document.getElementById('guess-table');
     input = document.getElementById('guess-input')
     const emoteout = document.getElementById('emote-display');
-    
+
     if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .. me too
         getDataStore();
         if (attempt >= max_attempts) {
@@ -78,7 +78,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!finished) {
         fetchEmote();
     }
-    
+
     function guessinp() {
         guess = input.value.toLowerCase();
         // invalid guesses
@@ -102,8 +102,8 @@ window.addEventListener("DOMContentLoaded", () => {
         handleAttempt(guess);
         handleTable();
         updateState();
-    }    
-    
+    }
+
     function getDataStore() {
         var state = JSON.parse(localStorage.getItem("emotedle")) || {};
         if (state.date === day) {
