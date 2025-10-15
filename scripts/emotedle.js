@@ -172,7 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
         } else if (attempt >= max_attempts) {
             previousGuesses.push(guess);
             previousResults.push(getEmote(true))
-            result.innerHTML = "You have no attempts left. (5/5)";
+            result.innerHTML = "You have no attempts left. (5/5) The emote was: \"" + realname + "\"";
             complete();
         } else {
             fetchEmote();
