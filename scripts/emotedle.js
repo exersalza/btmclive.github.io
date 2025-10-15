@@ -63,11 +63,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .. me too
         getDataStore();
         if (attempt >= max_attempts && !finished) {
+            console.log("gg")
             handleAttempt(guess);
         } else if (finished) {
-            result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
+            // result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
             if (guess === realname) {
-                setInfoText(true)
+                setInfoText(true, `Attempt ${attempt}/${max_attempts} | `)
             } else {
                 setInfoText(false)
             }
@@ -140,7 +141,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         let img = new Image();
         let tmp = document.createElement('p');
         document.getElementById('emote-display').appendChild(tmp).innerHTML = "Loading..";
-        const res = await fetch(url + attempt, { cache: 'cache' });
+        const res = await fetch(url + attempt);
         try {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
@@ -176,13 +177,13 @@ window.addEventListener("DOMContentLoaded", async () => {
         if (guess == realname) {
             previousGuesses.push(guess);
             previousResults.push(getEmote(false));
-            setInfoText(true);
+            setInfoText(true, resultTextFormat);
             complete();
             return
         } else if (attempt >= max_attempts) {
             previousGuesses.push(guess);
             previousResults.push(getEmote(true));
-            setInfoText(false);
+            setInfoText(false, resultTextFormat);
             complete();
         } else {
             fetchEmote();
@@ -193,7 +194,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function setInfoText(guessedRight) {
+    function setInfoText(guessedRight, resultTextFormat) {
         if (guessedRight) {
             result.innerHTML = resultTextFormat + "You got it right.";
             return
