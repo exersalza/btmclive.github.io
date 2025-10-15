@@ -63,7 +63,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .. me too
         getDataStore();
         if (attempt >= max_attempts && !finished) {
-            console.log(ff)
             handleAttempt(guess);
         } else if (finished) {
             result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
@@ -72,6 +71,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             } else {
                 setInfoText(false)
             }
+
             complete();
         } else {
             result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
@@ -127,7 +127,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     function updateState() {
         if (storageAvailable("localStorage")) {
             localStorage.setItem("emotedle", JSON.stringify(
-                { date: day, attempt, previousGuesses: previousGuesses, previousResults: previousResults, completed: finished}
+                { date: day, attempt, previousGuesses: previousGuesses, previousResults: previousResults, completed: finished }
             ))
             console.log(localStorage.getItem("emotedle"))
         } else {
