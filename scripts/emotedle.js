@@ -141,7 +141,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         let img = new Image();
         let tmp = document.createElement('p');
         document.getElementById('emote-display').appendChild(tmp).innerHTML = "Loading..";
-        const res = await fetch(url + attempt);
+        const res = await fetch(url + attempt, { cache: "no-csche" });
         try {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
