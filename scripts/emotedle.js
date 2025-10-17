@@ -128,7 +128,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             localStorage.setItem("emotedle", JSON.stringify(
                 { date: day, attempt, previousGuesses: previousGuesses, previousResults: previousResults, completed: finished }
             ))
-            console.log(localStorage.getItem("emotedle"))
+            // console.log(localStorage.getItem("emotedle"))
         } else {
             console.log("unable to save")
         }
@@ -277,8 +277,16 @@ async function fetchEmoteName() {
         realname = emotename.toLowerCase();
         return realname;
     } catch (err) {
-        console.error(err.message);
-        return err
+        setTimeout(() => {
+            let disp = document.getElementById('emote-display');
+            let tmp = document.createElement('p');
+            tmp.style.position = "absolute";
+            tmp.style.bottom = "0";
+            disp.querySelector('p').remove();
+            disp.appendChild(tmp).innerHTML = "Failed to get emote. Please wait.";
+            console.error(err.message);
+            setTimeout(() => { window.location.reload(); }, 4000);
+        }, 1000);
     }
 }
 
