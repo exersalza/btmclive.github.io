@@ -145,7 +145,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         emoteout.appendChild(tmp).innerHTML = "Loading..";
         tmp.style.position = "absolute";
         tmp.style.bottom = "0";
-        const res = await fetch(url + attempt);
+        const res = await fetch(url + attempt, { cache: "no-cache" });
         try {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
