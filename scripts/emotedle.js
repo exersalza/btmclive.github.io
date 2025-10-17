@@ -57,16 +57,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     const result = document.getElementById('guess-result');
     button = document.getElementById('submit-button');
     table = document.getElementById('guess-table');
-    input = document.getElementById('guess-input')
+    input = document.getElementById('guess-input');
     const emoteout = document.getElementById('emote-display');
 
     if (storageAvailable("localStorage")) { // i hate stuff not working when cookies are blocked .. me too
         getDataStore();
         if (attempt >= max_attempts && !finished) {
-            console.log("gg")
             handleAttempt(guess);
         } else if (finished) {
-            // result.innerHTML = `Attempt ${attempt}/${max_attempts}`;
             if (guess === realname) {
                 setInfoText(true, `Attempt ${attempt}/${max_attempts} | `)
             } else {
@@ -97,10 +95,10 @@ window.addEventListener("DOMContentLoaded", async () => {
                 handleAttempt(guess);
                 return false
             } else if (previousGuesses.includes(guess)) {
-                result.innerHTML = "Attempt: " + attempt + "/5 | you already guessed this";
+                result.innerHTML = `Attempt: ${attempt}/5 | you already guessed this`;
                 return false
             } else if (guess == "" || guess == null || guess == 0) {
-                result.innerHTML = "Attempt: " + attempt + "/5 | Guess can't be empty";
+                result.innerHTML = `Attempt: ${attempt}/5 | Guess can't be empty`;
                 return false
             } else {
                 return true
@@ -138,17 +136,26 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     async function fetchEmote() {
         disableInput()
+        let container = document.getElementById('emote-image-container');
         let img = new Image();
         let tmp = document.createElement('p');
-        document.getElementById('emote-display').appendChild(tmp).innerHTML = "Loading..";
+        if (attempt > 0) {
+            createLoader();
+        }
+        emoteout.appendChild(tmp).innerHTML = "Loading..";
+        tmp.style.position = "absolute";
+        tmp.style.bottom = "0";
         const res = await fetch(url + attempt);
         try {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
             img.src = e
-            img.onload = function() {
-                document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 2}px">`;
-                enableInput();
+            img.onload = function () {
+                container.innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 2}px">`;
+                setTimeout(() => {
+                    emoteout.removeChild(tmp);
+                    enableInput();
+                }, 2000);
             }
         } catch (err) {
             console.error(err.message);
@@ -157,11 +164,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     function fetchFullEmote() {
+        createLoader();
         let e = url + max_attempts;
         let img = new Image();
         img.src = e;
         img.onload = function() {
-            document.getElementById('emote-display').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
+            document.getElementById('emote-image-container').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
         }
     }
 
@@ -199,8 +207,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             result.innerHTML = resultTextFormat + "You got it right.";
             return
         }
-
-        result.innerHTML = "You have no attempts left. (5/5) The emote was: \"" + realname + "\"";
+        result.innerHTML = "You have no attempts left. (5/5) | The emote was: \"" + realname + "\"";
     }
 
     button.addEventListener('click', guessinp);
@@ -243,7 +250,25 @@ function handleTable() {
     guesstable += "<table><tr><td>#" + (attempt) + "</td><td>" + previousGuesses[attempt - 1] + "</td></tr></table>";
     table.innerHTML = guesstable;
 }
-
+function createLoader() {
+    let container = document.getElementById('emote-image-container');
+    let loader = document.createElement('svg');
+    container.appendChild(loader);
+    loader.outerHTML = `
+        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="loaderGradient">
+                    <stop offset="0%" stop-color="#908e8e"/>
+                    <stop offset="100%" stop-color="#454589"/>
+                </linearGradient>
+            </defs>
+            <rect rx="8" ry="8" class="loading-border" height="100%" width="100%" stroke="url(#loaderGradient)" stroke-linejoin="miter-clip"></rect>
+        </svg>`
+    container.querySelector('svg').style.width = container.querySelector('img').width + 2;
+    container.querySelector('svg').style.height = container.querySelector('img').height + 2;
+    container.querySelector('svg').querySelector('rect').style.width = container.querySelector('img').width + 2;
+    container.querySelector('svg').querySelector('rect').style.height = container.querySelector('img').height + 2;
+}
 async function fetchEmoteName() {
     const res = await fetch(answer, { cache: 'no-cache' });
     try {

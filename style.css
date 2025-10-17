@@ -7,6 +7,10 @@
   from {translate: 0px -50px; opacity: 0;} 
   to {translate: 0px 0px; opacity: 1;}
 }
+@keyframes LoadingBorder {
+  0% {stroke-dashoffset: 0;}
+  100% {stroke-dashoffset: 670;}
+}
 :root {
   --accent-1: #24283b;
   --accent-1-hover: #2c3047;
@@ -177,6 +181,12 @@ a.linkButton:hover {
   align-items: center;
   flex-direction: column;
 }
+#emote-image-container {
+  display: flex;
+}
+#emote-image-container svg {
+  position: absolute;
+}
 #emote-image {
   object-fit: contain;
 }
@@ -213,6 +223,14 @@ a.linkButton:hover {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: 1;
+}
+.loading-border {
+  stroke-dasharray: 52;
+  stroke-width: 4px;
+  fill: transparent;
+  /* stroke: rgba(120, 100, 213, 0.5); */
+  animation: LoadingBorder 2s ease-in-out alternate-reverse infinite;
+  z-index: -5;
 }
 .horiz-divider {
   background: white;
