@@ -226,8 +226,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         fetchFullEmote();
         share();
     }
-
-
     // ----- end -----
 });
 
@@ -252,22 +250,25 @@ function handleTable() {
 }
 function createLoader() {
     let container = document.getElementById('emote-image-container');
-    let loader = document.createElement('svg');
-    container.appendChild(loader);
-    loader.outerHTML = `
-        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="loaderGradient">
-                    <stop offset="0%" stop-color="#908e8e"/>
-                    <stop offset="100%" stop-color="#454589"/>
-                </linearGradient>
-            </defs>
-            <rect rx="8" ry="8" class="loading-border" height="100%" width="100%" stroke="url(#loaderGradient)" stroke-linejoin="miter-clip"></rect>
-        </svg>`
-    container.querySelector('svg').style.width = container.querySelector('img').width + 2;
-    container.querySelector('svg').style.height = container.querySelector('img').height + 2;
-    container.querySelector('svg').querySelector('rect').style.width = container.querySelector('img').width + 2;
-    container.querySelector('svg').querySelector('rect').style.height = container.querySelector('img').height + 2;
+    if (container.querySelector('img') !== null) {
+        console.log("e")
+        let loader = document.createElement('svg');
+        container.appendChild(loader);
+        loader.outerHTML = `
+            <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="loaderGradient">
+                        <stop offset="0%" stop-color="#908e8e"/>
+                        <stop offset="100%" stop-color="#454589"/>
+                    </linearGradient>
+                </defs>
+                <rect rx="8" ry="8" class="loading-border" height="100%" width="100%" stroke="url(#loaderGradient)" stroke-linejoin="miter-clip"></rect>
+            </svg>`
+        container.querySelector('svg').style.width = container.querySelector('img').width + 2;
+        container.querySelector('svg').style.height = container.querySelector('img').height + 2;
+        container.querySelector('svg').querySelector('rect').style.width = container.querySelector('img').width + 2;
+        container.querySelector('svg').querySelector('rect').style.height = container.querySelector('img').height + 2;
+    }
 }
 async function fetchEmoteName() {
     const res = await fetch(answer, { cache: 'no-cache' });
