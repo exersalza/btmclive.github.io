@@ -264,10 +264,14 @@ function createLoader() {
                 </defs>
                 <rect rx="8" ry="8" class="loading-border" height="100%" width="100%" stroke="url(#loaderGradient)" stroke-linejoin="miter-clip"></rect>
             </svg>`
-        container.querySelector('svg').style.width = container.querySelector('img').width + 2;
-        container.querySelector('svg').style.height = container.querySelector('img').height + 2;
-        container.querySelector('svg').querySelector('rect').style.width = container.querySelector('img').width + 2;
-        container.querySelector('svg').querySelector('rect').style.height = container.querySelector('img').height + 2;
+        console.log(container.querySelector('img').height)
+        console.log(container.querySelector('svg'))
+        container.querySelector('svg').style.width = `${container.querySelector('img').width + 2}px`;
+        container.querySelector('svg').style.height = `${container.querySelector('img').height + 2}px`;
+        console.log(container.querySelector('svg').style.width)
+        container.querySelector('svg').querySelector('rect').style.width = `${container.querySelector('img').width + 2}px`;
+        container.querySelector('svg').querySelector('rect').style.height = `${container.querySelector('img').height + 2}px`;
+        console.log(container.querySelector('svg').querySelector('rect').style.width)
     }
 }
 async function fetchEmoteName() {
