@@ -143,7 +143,7 @@ a.linkButton:hover {
 #randomMsgBody{
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-around;
   gap: 1em;
 }
@@ -198,11 +198,26 @@ a.linkButton:hover {
 }
 .fetchDisplay {
   display: flex;
-  padding: 10px 12px;
-  margin: 8px 0px;
+  padding: 9px 12px;
+  margin: 2px;
   border-radius: 8px;
   background-color: #14151e;
+  z-index: 1;
   /* font-family: "JetBrainsMono"; doesn't work i cba to fix rn*/
+}
+#emote-display .fetchDisplay {
+  width: 97%;
+  height: 97%;
+  align-items: center;
+  justify-content: center;
+}
+.gradientContainer {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin-top: .4em;
 }
 .gradient-border {
   border: none;
@@ -211,18 +226,20 @@ a.linkButton:hover {
 .gradient-border::after {
   content: "";
   position: absolute;
-  inset: 0;
-  padding: 3px;
-  border-radius: 8px;
-  background: linear-gradient(168deg, #908e8e 10%, #454589 80%),
+  /* inset: 0; */
+  /* padding: 3px; */
+  /* border-radius: 8px; */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(168deg, #908e8e 10%, #454589 60%),
   linear-gradient(0deg, #FFFFFF, #FFFFFF);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
-              linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  z-index: 1;
+  /* -webkit-mask: linear-gradient(#fff 0 0) content-box,  */
+              /* linear-gradient(#fff 0 0); */
+  /* mask: linear-gradient(#fff 0 0) content-box,  */
+      /* linear-gradient(#fff 0 0); */
+  /* -webkit-mask-composite: xor; */
+  /* mask-composite: exclude; */
+  z-index: -5;
 }
 .loading-border {
   stroke-dasharray: 52;

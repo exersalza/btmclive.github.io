@@ -31,14 +31,22 @@
           <div id="msgButtonsContainer">
             <button id="randomBtmcMsgButton" onclick="setRandomLog(true)">New Message</button>
           </div>
-          <p class="fetchDisplay gradient-border" id="randomBtmcLog">Loading...</p>
+          <div class="gradientContainer gradient-border">
+            <div class="fetchDisplay">
+              <p id="randomBtmcLog">Loading...</p>
+            </div>
+          </div>
       </div>
       <div class="rmsgDiv">
         <h2>or a random chat message in general</h2>
         <div id="msgButtonsContainer">
           <button id="randomMsgButton" onclick="setRandomLog(false)">New Message</button>
         </div>
-        <p class="fetchDisplay gradient-border" id="randomLog">...</p>
+        <div class="gradientContainer gradient-border">
+          <div class="fetchDisplay">
+            <p id="randomLog">...</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
