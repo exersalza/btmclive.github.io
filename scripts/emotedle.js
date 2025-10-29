@@ -88,7 +88,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     function guessinp() {
-        guess = input.value.toLowerCase();
+        //                                trim whitespace characters
+        guess = input.value.toLowerCase().replace(/^\s+|\s+$/g, "");
         // invalid guesses
         function checkValid() {
             if (attempt >= max_attempts) {
