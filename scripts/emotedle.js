@@ -251,7 +251,6 @@ function handleTable() {
 function createLoader() {
     let container = document.getElementById('emote-image-container');
     if (container.querySelector('img') !== null) {
-        console.log("e")
         let loader = document.createElement('svg');
         container.appendChild(loader);
         loader.outerHTML = `
@@ -272,7 +271,7 @@ function createLoader() {
 }
 async function fetchEmoteName() {
     try {
-        const res = await fetch(answer, { cache: 'no-cache' });
+        const res = await fetch(answer + `?${utcCurMidnight}`, { cache: 'no-cache' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let emotename = await res.text();
         realname = emotename.toLowerCase();
