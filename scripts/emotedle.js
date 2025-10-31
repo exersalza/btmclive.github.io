@@ -145,18 +145,18 @@ window.addEventListener("DOMContentLoaded", async () => {
         emoteout.appendChild(tmp).innerHTML = "Loading..";
         tmp.style.position = "absolute";
         tmp.style.bottom = "0";
-        const res = await fetch(url + attempt, { cache: "no-cache" });
+        tmp.style.zIndex = "3";
         try {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
             let e = url + attempt;
             img.src = e
-            img.onload = function () {
-                container.innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 2}px">`;
-                setTimeout(() => {
-                    emoteout.removeChild(tmp);
+            container.innerHTML = `<img id="emote-image" src="${e}">`;
+            img.onload = () => {
+                document.getElementById("emote-image").style.height = `${img.height * 2}px`;
+                emoteout.removeChild(tmp);
                     enableInput();
-                }, 2000);
-            }
+                }
+            // const res = await fetch(url + attempt, { cache: "no-cache" });
+            // if (!res.ok) throw new Error('HTTP ' + res.status);
         } catch (err) {
             console.error(err.message);
             emoteout.innerHTML = 'Error getting emote: ' + err.message;
@@ -264,19 +264,15 @@ function createLoader() {
                 </defs>
                 <rect rx="8" ry="8" class="loading-border" height="100%" width="100%" stroke="url(#loaderGradient)" stroke-linejoin="miter-clip"></rect>
             </svg>`
-        console.log(container.querySelector('img').height)
-        console.log(container.querySelector('svg'))
         container.querySelector('svg').style.width = `${container.querySelector('img').width + 2}px`;
         container.querySelector('svg').style.height = `${container.querySelector('img').height + 2}px`;
-        console.log(container.querySelector('svg').style.width)
         container.querySelector('svg').querySelector('rect').style.width = `${container.querySelector('img').width + 2}px`;
         container.querySelector('svg').querySelector('rect').style.height = `${container.querySelector('img').height + 2}px`;
-        console.log(container.querySelector('svg').querySelector('rect').style.width)
     }
 }
 async function fetchEmoteName() {
-    const res = await fetch(answer, { cache: 'no-cache' });
     try {
+        const res = await fetch(answer, { cache: 'no-cache' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let emotename = await res.text();
         realname = emotename.toLowerCase();

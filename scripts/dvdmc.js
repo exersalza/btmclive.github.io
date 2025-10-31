@@ -42,7 +42,7 @@ let randomizeColor = true;
 const speed = 1.0;
 
 // variables
-let x = randint(1, window.innerWidth - size[0] - 1);
+let x = randint(1, window.innerWidth - size[0] - 10);
 let y = randint(1, window.innerHeight - size[1] - 1);
 let isPaused = false; // pause state
 
@@ -52,7 +52,7 @@ let direction = [1, 1];
 logo.id = "logo";
 
 // add the logo to the page
-document.getElementById('body').append(logo);
+document.getElementById('dvd-body').append(logo);
 
 move(logo, x, y);
 
@@ -66,7 +66,7 @@ setInterval(() => {
         // check if logo is bouncing on the left/right side
         if (x <= 1) {
             changeDirection(0, 1);
-        } else if (x + size[0] + 1 >= window.innerWidth) {
+        } else if (x + size[0] + 10 >= window.innerWidth) {
             changeDirection(0, -1);
         }
         
