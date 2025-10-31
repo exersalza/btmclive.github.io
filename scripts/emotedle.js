@@ -165,7 +165,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     function fetchFullEmote() {
         createLoader();
-        let e = url + max_attempts;
+        let e = url + 10;
         let img = new Image();
         img.src = e;
         img.onload = function() {
