@@ -1,8 +1,8 @@
-/* @font-face {
-  font-family: 'JetBrainsMono';
+@font-face {
+  font-family: 'JetBrains Mono';
   font-style: normal;
   src: url(/assets/fonts/JetBrainsMono-Regular.woff2) format('woff2');
-} */
+}
 @keyframes FadeIn_rev {
   from {translate: 0px -50px; opacity: 0;} 
   to {translate: 0px 0px; opacity: 1;}
@@ -21,8 +21,7 @@
 }
 * {
   padding:0;
-  text-align: center;
-  font-family: "Comic Sans MS", "Comic Sans", "Noto Sans";
+  font-family: "Noto Sans";
   color: #c0caf5;
   box-sizing: border-box;
 }
@@ -62,10 +61,32 @@ p {
 img {
   object-fit: cover;
 }
-td, th {
+table#guess-table td, th {
   padding: 8px;
   background: var(--accent-1-hover);
   border-radius: 4px;
+}
+table.changelog tr::before {
+  padding-left: 8px;
+  content: "• ";
+  font-weight: bolder;
+}
+table.changelog td {
+  font-family: 'JetBrains Mono';
+}
+table.changelog td:first-child {
+  width: 95px;
+}
+td {
+  padding: inherit;
+}
+tr {
+  padding-left: 8px;
+}
+li {
+  padding-left: 16px;
+  list-style-position: inside;
+  font-family: inherit;
 }
 button {
   font-size: medium;

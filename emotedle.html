@@ -10,10 +10,10 @@
 
 <body>
     <div class="NavBar-wrap"></div>
-    <h1>Emotedle</h1>
+    <h1 style="text-align: center;">Emotedle</h1>
     <div class="body">
         <div class="body-section" style="display: flex;flex-direction: column;gap: 1em;align-items: center;">
-            <h2>Guess the emote</h2>
+            <h2 style="margin-top: 0;">Guess the emote</h2>
             <div id="emote-display" class="gradientContainer gradient-border">
                 <div class="fetchDisplay">
                     <div id="emote-image-container"></div>
@@ -38,11 +38,58 @@
             </div>
         </div>
         <div class="body-section">
-            <h2>How To Play</h2>
+            <h2 style="margin-top: 0;">How To Play</h2>
             <p>Use the given area of the emote to guess the name of the 7tv emote from Ed's chat and globals. Area increases per attempt.</p>
             <sub>If the display is blank after ~5 seconds, then the emote is just transparent</sub>
         </div>
+        <div class="body-section" style="text-align: left;">
+            <h2 style="text-align: center; margin-top: 0;">Changelog</h2>
+            <h3 style="margin-bottom: 4px;">Nov 03, 2025</h3>
+                <table class="changelog">
+                    <tr>
+                        <td>[Backend]</td>
+                        <td>Removed global emotes for now</td>
+                    </tr>
+                </table>
+            <h3 style="margin-bottom: 4px;">Oct 31, 2025</h3>
+                <table class="changelog">
+                    <tr>
+                        <td>[Frontend]</td>
+                        <td>Load the full size image at the end rather than 75% size</td>
+                    </tr>
+                    <tr>
+                        <td>[Frontend]</td>
+                        <td>Speed up loading times by 3x</td>
+                    </tr>
+                    <tr>
+                        <td>[Backend]</td>
+                        <td>Speed up loading times by .5x</td>
+                    </tr>
+                    <tr>
+                        <td>[Backend]</td>
+                        <td>Changed api for retrieving emotes</td>
+                    </tr>
+                    <tr>
+                        <td>[X]</td>
+                        <td>Fix caching issues</td>
+                    </tr>
+                </table>
+            <h3 style="margin-bottom: 4px;">Oct 30, 2025</h3>
+                <table class="changelog">
+                    <tr>
+                        <td>[Frontend]</td>
+                        <td>Trim all whitespace from input</td>
+                    </tr>
+                    <tr>
+                        <td>[Backend]</td>
+                        <td>Added global emotes to pool</td>
+                    </tr>
+                    <tr>
+                        <td>[Backend]</td>
+                        <td>Changed api for retrieving emotes</td>
+                    </tr>
+                </table>
+        </div>
     </div>
 </body>
-
 </html>
