@@ -5,6 +5,49 @@
     <link rel="stylesheet" href="style.css">
     <script src="scripts/nav.js"></script>
     <script src="scripts/load-nav.js"></script>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const player = document.getElementById("sputnik-video");
+            const body = player.parentElement;
+            let dancing = false;
+
+            function random(min, max) {
+                const minCeiled = Math.ceil(min);
+                const maxFloored = Math.floor(max);
+                return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+            }
+            function dance() {
+                if (!dancing && (player.currentTime > 3.2) && !player.paused) {
+                    dancing = true;
+                    setInterval(() => {
+                        if (dancing) {
+                            body.style.transition = `ease-in-out .035s`
+                            body.style.translate = `0px ${random(-100, 10)}px`;
+                        }
+                    }, 30);
+                    setInterval(() => {
+                        if (dancing) {
+                            body.style.transform = `rotate(${random(-1, 1)}deg)`;
+                        }
+                    }, 300);
+                }
+                else if (dancing && player.currentTime <= 3.2) {
+                    body.style.animation = ``;
+                    body.style.translate = `0px 0px`;
+                    body.style.transform = ``;
+                    dancing = false;
+                }
+            }
+            function pauseChange() {
+                body.style.animation = ``;
+                body.style.translate = `0px 0px`;
+                body.style.transform = ``;
+                dancing = false;
+            }
+            player.addEventListener("pause", pauseChange);
+            player.addEventListener("timeupdate", dance)
+        });
+    </script>
 </head>
 
 <body>
@@ -14,6 +57,10 @@
         <div class="body-section">
             <h2>Posture.</h2>
             <img src="images/posture.png" alt="posture." style="width: 100%;">
+        </div>
+        <div class="body-section" id="sputnik">
+            <h2>Sputnik</h2>
+            <video id="sputnik-video" controls src="https://nitter.tiekoetter.com/pic/ext_tw_video/1546062996270874624/pu/vid/320x320/qe2HLRJIOKzRxYec.mp4" alt="sputnik" style="width: 40%;">
         </div>
     </div>
 </body>
