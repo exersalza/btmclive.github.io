@@ -153,7 +153,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             img.onload = () => {
                 document.getElementById("emote-image").style.height = `${img.height * 2}px`;
                 emoteout.removeChild(tmp);
-                    enableInput();
+                stopLoader();
+                enableInput();
                 }
             // const res = await fetch(url + attempt, { cache: "no-cache" });
             // if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -170,6 +171,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         img.src = e;
         img.onload = function() {
             document.getElementById('emote-image-container').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
+            stopLoader();
         }
     }
 
@@ -250,6 +252,8 @@ function handleTable() {
 }
 function createLoader() {
     let container = document.getElementById('emote-image-container');
+    let border = document.getElementById('emote-display');
+    border.style.setProperty('--placeholder-anim', 'Spin 2s infinite cubic-bezier(0.65, 0.05, 0.36, 1)')
     if (container.querySelector('img') !== null) {
         let loader = document.createElement('svg');
         container.appendChild(loader);
@@ -268,6 +272,10 @@ function createLoader() {
         container.querySelector('svg').querySelector('rect').style.width = `${container.querySelector('img').width + 2}px`;
         container.querySelector('svg').querySelector('rect').style.height = `${container.querySelector('img').height + 2}px`;
     }
+}
+function stopLoader() {
+    let border = document.getElementById('emote-display');
+    border.style.setProperty('--placeholder-anim', '')
 }
 async function fetchEmoteName() {
     try {
@@ -297,8 +305,10 @@ function share() {
     copybtn.addEventListener("click", function() {
         navigator.clipboard.writeText(shareString.replaceAll(',', ''));
         copybtn.style.backgroundColor = "#194d33";
+        copybtn.innerHTML = `Copied`;
         setTimeout(() => {
             copybtn.style.backgroundColor = "";
+            copybtn.innerHTML = `Share`;
         }, 2000);
     })
 }
