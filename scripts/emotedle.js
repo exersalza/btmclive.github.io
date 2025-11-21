@@ -294,7 +294,7 @@ async function fetchEmoteName() {
             disp.querySelector('p').remove();
             disp.appendChild(tmp).innerHTML = "Failed to get emote. Please wait.";
             console.error(err.message);
-            setTimeout(() => { window.location.reload(); }, 4000);
+            setTimeout(() => {if (document.hasFocus()) { window.location.reload(); }}, 5000);
         }, 1000);
     }
 }
