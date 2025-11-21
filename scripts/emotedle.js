@@ -290,6 +290,7 @@ async function fetchEmoteName() {
             let tmp = document.createElement('p');
             tmp.style.position = "absolute";
             tmp.style.bottom = "0";
+            tmp.style.zIndex = "5";
             disp.querySelector('p').remove();
             disp.appendChild(tmp).innerHTML = "Failed to get emote. Please wait.";
             console.error(err.message);
