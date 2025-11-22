@@ -6,8 +6,8 @@ const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMo
 const utcStartMidnight = Date.UTC(startDateObj.getUTCFullYear(), startDateObj.getUTCMonth(), startDateObj.getUTCDate());
 const day = `${curDateObj.getUTCDate()} ${curDateObj.getUTCMonth() + 1} ${curDateObj.getUTCFullYear()}`;
 const dateDiff = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000));
-const url = "https://osu-rust-api.onrender.com/random/emote/";
-const answer = "https://osu-rust-api.onrender.com/real/emotename";
+const url = "https://btmcs-backend.onrender.com/random/emote/";
+const answer = "https://btmcs-backend.onrender.com/real/emotename";
 
 // -- variable -- //
 let attempt = 0;
