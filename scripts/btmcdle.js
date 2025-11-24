@@ -1,8 +1,8 @@
 // -- constants -- //
 const max_attempts = 7;
 const day = new Date().toDateString(); // current date
-const url = "https://osu-rust-api.onrender.com/random/score/btmc";
-const answer = "https://osu-rust-api.onrender.com/real/acc/btmc";
+const url = "https://btmcs-backend.onrender.com/random/score/btmc";
+const answer = "https://btmcs-backend.onrender.com/real/acc/btmc";
 
 // -- variable -- //
 let attempt = 0;

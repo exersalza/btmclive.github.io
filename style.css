@@ -15,6 +15,19 @@
   0% {transform: rotate(0deg);}
   100% {transform: rotate(1440deg);}
 }
+@keyframes Ping {
+  0% {transform: scale(0.5); opacity: 1;}
+  80% {transform: scale(1.4); opacity: 0;}
+  100% {transform: scale(1.4); opacity: 0;}
+}
+@keyframes FadeIn {
+  from {translate: 0px 40px; opacity: 0;}
+  to {translate: 0px 0px; opacity: 1;}
+}
+@keyframes FadeOut {
+  from {translate: 0px 0px; opacity: 1;}
+  to {translate: 0px 40px; opacity: 0;}
+}
 :root {
   --accent-1: #24283b;
   --accent-1-hover: #2c3047;
@@ -25,7 +38,7 @@
 }
 * {
   padding:0;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans", Arial, system-ui;
   color: #c0caf5;
   box-sizing: border-box;
 }
@@ -215,6 +228,49 @@ a.linkButton:hover {
 #emote-image {
   object-fit: contain;
 }
+#twitch-status {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 1em;
+}
+#channel-info, #stream-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  flex: 1 1;
+}
+#channel-info #followers {
+  display: flex;
+  align-items: baseline;
+  font-size: 30px;
+}
+#channel-info h6 {
+  margin: 0;
+}
+#Pinger {
+  animation: Ping 2s infinite ease-out;
+}
+#notif {
+  display: none;
+  min-width: 150px;
+  margin-left: -75px;
+  background-color: #333;
+  text-align: center;
+  border-radius: 4px;
+  padding: 8px; 
+  position: fixed; 
+  z-index: 1;
+  left: 50%;
+}
+#notif.shown {
+  display: block;
+  animation: FadeIn 0.5s, FadeOut 0.5s 1s;
+}
+.live-indicator {
+  margin-right: 8px;
+}
 .rmsgDiv {
   display: flex;
   align-items: center;
@@ -316,7 +372,6 @@ a.linkButton:hover {
 .quicklinks:has(.linkicon:hover)  a[href*="github.com"] .linkicon:not(:hover) {
   filter: contrast(0.25) !important;
 }
-
 /* navbar */
 .NavBar-wrap {
   box-sizing: unset !important;
@@ -454,6 +509,3 @@ a.linkButton:hover {
   background: #1a1b26;
   z-index: 3;
 }
-
-
-

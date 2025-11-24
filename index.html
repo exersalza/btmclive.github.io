@@ -2,10 +2,14 @@
 
 <html>
 <head>
-  <script src="scripts/log.js"></script>
+  <title>Home - BTMC</title>
   <script src="scripts/dvdmc.js" defer></script>
   <script src="scripts/nav.js"></script>
   <script src="scripts/load-nav.js"></script>
+  <script src="scripts/twitch.js"></script>
+  <script src="scripts/CounterAnime/dist/counterAnime.min.js"></script>
+  <link rel="stylesheet" href="scripts/CounterAnime/dist/style.css">
+  
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -26,27 +30,13 @@
       </div>
       <a href="./captsiro/index.html">CaptSiro's hand made 3D rendering engine</a>
     </div>
-    <div id="randomMsgBody">
-      <div class="rmsgDiv">
-        <h2>Here have a random ed message</h3>
-          <div id="msgButtonsContainer">
-            <button id="randomBtmcMsgButton" onclick="setRandomLog(true)">New Message</button>
-          </div>
-          <div class="gradientContainer gradient-border">
-            <div class="fetchDisplay">
-              <p id="randomBtmcLog">Loading...</p>
-            </div>
-          </div>
-      </div>
-      <div class="rmsgDiv">
-        <h2>or a random chat message in general</h2>
-        <div id="msgButtonsContainer">
-          <button id="randomMsgButton" onclick="setRandomLog(false)">New Message</button>
+    <div class="body-section" style="padding:16px">
+      <div id="twitch-status">
+        <div id="channel-info">
+          <h2>Twitch Channel Info</h2>
         </div>
-        <div class="gradientContainer gradient-border">
-          <div class="fetchDisplay">
-            <p id="randomLog">...</p>
-          </div>
+        <div id="stream-info">
+          <h2>Latest Stream</h2>
         </div>
       </div>
     </div>
@@ -67,6 +57,7 @@
     <button id="pausebmcButton">Pause bmc</button>
     <button id="spinbmcButton">Spin bmc</button>
   </div>
+  <div id="notif"></div>
 </body>
 </html>
 
