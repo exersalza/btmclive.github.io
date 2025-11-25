@@ -100,19 +100,30 @@ async function fetchChannelInfo(entry) {
 
 async function fetchStreamInfo(entry) {
     const stream_container = document.getElementById("stream-info");
-    const date = new Date(JSON.parse(await fetchLatestStream())[0].created_at);
+    const date = new Date(JSON.parse(await fetchLatestStream())[0].created_at); // stream date
+    const curDateObj = new Date() // current date
+    const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMonth(), curDateObj.getUTCDate());
+    const utcStartMidnight = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    const downtime = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000));
     let title = document.createElement('p');
-    let game = document.createElement('p');
     let duration = document.createElement('p');
     let start = document.createElement('p');
-        start.innerHTML = `Started: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
-        title.innerHTML = `"${entry.title}"`;
-        game.innerHTML = entry.game_name;
+    let datediff = document.createElement('p');
+        title.innerHTML = `[${entry.game_name}] - "${entry.title}"`;
         duration.innerHTML = `Duration: ${JSON.parse(await fetchLatestStream())[0].duration}`;
+        start.innerHTML = `Started: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        datediff.innerHTML = `Days without stream: ${downtime}`;
+            datediff.style.fontWeight = "bold";
+    if (downtime < 1) {
+        datediff.style.display = "flex"; datediff.style.alignItems = "center"; datediff.style.gap = "4px";
+        datediff.innerHTML += `<img src="https://cdn.7tv.app/emote/01F6N0NRYR000AR0YATR3Q3CPR/1x.webp" height=24px>`;
+    } else if (downtime > 3) {
+        datediff.innerHTML += "...";
+    }
     stream_container.appendChild(title);
-    stream_container.appendChild(game);
     stream_container.appendChild(duration);
     stream_container.appendChild(start);
+    stream_container.appendChild(datediff);
     if (entry.started_at !== null) {
         let start_time = document.createElement('p');
         start_time.innerHTML = entry.started_at;
