@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // load
-    fetch('https://btmcs-backend.onrender.com/twitchinfo')
+    fetch('https://btmcs-backend.onrender.com/twitch/data')
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchFollowers() {
     try {
-        const res = await fetch("https://btmcs-backend.onrender.com/twitchinfo/followers", { cache: "no-cache" });
+        const res = await fetch("https://btmcs-backend.onrender.com/twitch/followers", { cache: "no-cache" });
         console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let followers = Number(await res.text());
@@ -27,7 +27,7 @@ async function fetchFollowers() {
 }
 async function fetchLatestStream() {
     try {
-        const res = await fetch("https://btmcs-backend.onrender.com/twitchinfo/latest", { cache: "no-cache" });
+        const res = await fetch("https://btmcs-backend.onrender.com/twitch/latest", { cache: "no-cache" });
         console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let stream = await res.text();
