@@ -79,8 +79,10 @@ async function fetchChannelInfo(entry) {
         let div = document.createElement("div");
             div.style.display = "flex"; div.style.alignItems = "center";
             div.innerHTML += `${pinger}`;
-        let livestat = document.createElement("h4");
+        let livestat = document.createElement("a");
             livestat.innerHTML = `Live`;
+            livestat.style.fontWeight = `Bold`;
+            livestat.href = "https://twitch.tv/btmc";
         div.appendChild(livestat);
         channel_container.appendChild(div)
     } else { // not live
