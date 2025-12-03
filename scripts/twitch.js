@@ -124,10 +124,4 @@ async function fetchStreamInfo(entry) {
     stream_container.appendChild(duration);
     stream_container.appendChild(start);
     stream_container.appendChild(datediff);
-    if (entry.started_at !== null) {
-        let start_time = document.createElement('p');
-        start_time.innerHTML = entry.started_at;
-        stream_container.appendChild(start_time);
-    }
 }
-
