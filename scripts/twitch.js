@@ -59,6 +59,7 @@ async function fetchChannelInfo(entry) {
     const counter = new CounterAnime(f_value, followers)
     setInterval(async () => {
         counter.setNumber(f_value);
+        console.log("updated");
     }, 60000);
     channel_container.appendChild(followers)
     followers.appendChild(follower_title);
@@ -106,7 +107,7 @@ async function fetchStreamInfo(entry) {
     const curDateObj = new Date() // current date
     const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMonth(), curDateObj.getUTCDate());
     const utcStartMidnight = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-    const downtime = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000));
+    const downtime = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000)) - 1;
     let title = document.createElement('p');
     let duration = document.createElement('p');
     let start = document.createElement('p');
