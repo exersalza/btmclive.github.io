@@ -4,13 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(response => response.json())
     .then(data => {
         console.log(data)
-        data.forEach(entry => {
-            fetchChannelInfo(entry);
-            fetchStreamInfo(entry);
+        data.forEach(async entry => {
+            await Promise.all([fetchChannelInfo(entry), fetchStreamInfo(entry)]);
         })
     })
     .catch(error => {
-        console.error("Error getting Twitch status: ", error)
+        console.error("Error getting Twitch status: ", error);
     });
 })
 
@@ -20,32 +19,21 @@ async function fetchFollowers() {
         console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let followers = Number(await res.text());
-        return followers
+        return followers;
     } catch (e) {
-        return "Failed to fetch followers: " + e
+        return "Failed to fetch followers: " + e;
     }
 }
+
 async function fetchLatestStream() {
     try {
         const res = await fetch("https://btmcs-backend.onrender.com/twitch/latest", { cache: "no-cache" });
         console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let stream = await res.text();
-        return stream
+        return stream;
     } catch (e) {
-        return "Failed to fetch stream info: " + e
-    }
-}
-
-async function splitFollowers(part) {
-    const f = (await fetchFollowers()).toString();
-    let hund = f.substring(f.length, f.length - 3);
-    let thous = f.substring(f.length - 3, f.length - 6);
-    switch (part) {
-        case 1: 
-            return Number(thous)
-        case 2: 
-            return Number(hund)
+        return "Failed to fetch stream info: " + e;
     }
 }
 
@@ -55,13 +43,13 @@ async function fetchChannelInfo(entry) {
     let follower_title = document.createElement("h6");
         follower_title.innerHTML = "followers";
     let followers = document.createElement("div");
-        followers.id = "followers"
-    const counter = new CounterAnime(f_value, followers)
+        followers.id = "followers";
+    const counter = new CounterAnime(f_value, followers);
     setInterval(async () => {
         counter.setNumber(f_value);
         console.log("updated");
     }, 60000);
-    channel_container.appendChild(followers)
+    channel_container.appendChild(followers);
     followers.appendChild(follower_title);
     
     document.getElementsByClassName("numberAnimation")[0].addEventListener("click", function () {
@@ -94,27 +82,29 @@ async function fetchChannelInfo(entry) {
             div.style.display = "flex"; div.style.alignItems = "center";
             div.innerHTML += `${pinger}`;
         let livestat = document.createElement('p');
-            livestat.style.color = "gray"
+            livestat.style.color = "gray";
             livestat.innerHTML = `Offline`;
         div.appendChild(livestat);
-        channel_container.appendChild(div)
+        channel_container.appendChild(div);
     }
 }
 
 async function fetchStreamInfo(entry) {
+    document.querySelector("#stream-info h2 a").href = JSON.parse(await fetchLatestStream())[0].url;
     const stream_container = document.getElementById("stream-info");
     const date = new Date(JSON.parse(await fetchLatestStream())[0].created_at); // stream date
-    const curDateObj = new Date() // current date
+    const curDateObj = new Date(); // current date
     const utcCurMidnight = Date.UTC(curDateObj.getUTCFullYear(), curDateObj.getUTCMonth(), curDateObj.getUTCDate());
     const utcStartMidnight = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     const downtime = Math.floor((utcCurMidnight - utcStartMidnight) / (24 * 60 * 60 * 1000)) - 1;
+    
     let title = document.createElement('p');
     let duration = document.createElement('p');
     let start = document.createElement('p');
     let datediff = document.createElement('p');
         title.innerHTML = `[${entry.game_name}] - "${entry.title}"`;
         duration.innerHTML = `Duration: ${JSON.parse(await fetchLatestStream())[0].duration}`;
-        start.innerHTML = `Started: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        start.innerHTML = `Started: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
         datediff.innerHTML = `Days without stream: ${downtime}`;
             datediff.style.fontWeight = "bold";
     if (downtime < 1) {
