@@ -50,7 +50,7 @@ async function searchUser(user, string, outhtml) {
     const res = await fetch(req, { cache: "no-cache" });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     let text = processText((await res.text()));
-    text = highlightLine(text, string);
+    text = highlightLine(text, string, false);
     outhtml.innerHTML = text;
     resulttext.innerHTML = `Found <b>${countLines(text)}</b> results in ${performance.now() - start}ms`;
   } catch (e) {
@@ -114,16 +114,22 @@ function searchR(text, filter) {
   let regex = new RegExp(filter, "ig");
   let lines = text.split("\n");
   let matches = lines
-    .map(line => { return highlightLine(line, filter); }) // highlight matches in red
+    .map(line => { return highlightLine(line, filter, true); }) // highlight matches in red
     .filter((line) => regex.test(line)); // return line if matched
   return matches.join("\n");
 }
 
-function highlightLine(line, filter) {
-  let regex = new RegExp(filter, "ig");
-  return line.replaceAll(regex, (match) => {
-    return `<span style='color:red;'>${match}</span>`;
-  });
+function highlightLine(line, filter, rgx) {
+  if (rgx) {
+    let regex = new RegExp(filter, "ig");
+    return line.replaceAll(regex, (match) => {
+      return `<span style='color:red;'>${match}</span>`;
+    });
+  } else {
+    return line.replaceAll(filter, (match) => {
+      return `<span style='color:red;'>${match}</span>`;
+    });
+  }
 }
 
 function countLines(text) {
