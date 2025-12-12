@@ -3,6 +3,12 @@
   font-style: normal;
   src: url(/assets/fonts/JetBrainsMono-Regular.woff2) format('woff2');
 }
+@font-face {
+  font-family: 'NF';
+  src: url("https://www.nerdfonts.com/assets/fonts/Symbols-2048-em%20Nerd%20Font%20Complete.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal
+}
 @keyframes FadeIn_rev {
   from {translate: 0px -50px; opacity: 0;}
   to {translate: 0px 0px; opacity: 1;}
@@ -43,7 +49,7 @@
   box-sizing: border-box;
 }
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0);
@@ -140,6 +146,29 @@ a.linkButton:hover {
   background-color: var(--accent-1-hover);
   transition: ease-in-out .2s background-color;
 }
+input {
+  font-size: medium;
+  padding: 8px;
+  border: solid 2px #565f89;
+  border-radius: 4px;
+  background-color: var(--accent-1);
+  transition: ease-in-out .2s background-color, transform;
+}
+input:hover {
+  background-color: var(--accent-1-hover);
+  transition: ease-in-out .2s background-color;
+}
+input:focus-visible {
+  outline: 3px inset;
+  background-color: var(--accent-2-hover);
+  transition: ease-in-out .2s;
+}
+input[type="checkbox"] {
+  height: 16px;
+}
+input:required {
+  border: 2px solid #7f7324;
+}
 .body {
   display: grid;
   padding: 12px;
@@ -193,23 +222,6 @@ a.linkButton:hover {
     right: 10px;
     bottom: 10px;
     z-index: 5;
-}
-#guess-input {
-  font-size: medium;
-  padding: 8px;
-  border: solid 2px #565f89;
-  border-radius: 4px;
-  background-color: var(--accent-1);
-  transition: ease-in-out .2s background-color, transform;
-}
-#guess-input:hover {
-  background-color: var(--accent-1-hover);
-  transition: ease-in-out .2s background-color;
-}
-#guess-input:focus-visible {
-  outline: 3px inset;
-  background-color: var(--accent-2-hover);
-  transition: ease-in-out .2s;
 }
 #emote-display {
   height: 256px;
@@ -508,4 +520,100 @@ a.linkButton:hover {
   top: -38px;
   background: #1a1b26;
   z-index: 3;
+}
+.logDisplay {
+  min-height: 200px;
+  font-family: "JetBrains Mono";
+  background: #131212;
+  text-align: left;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.logDisplay b {
+  font-weight:600;
+}
+.logDisplay a, .logDisplay span, .logDisplay b {
+  font-family:'JetBrains Mono';
+}
+.stats-container .stats {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.stats-container div h2 {
+  margin: 2px 0px;
+}
+.toggle-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.toggle-container input {
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+.check {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: #333;
+}
+.check::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.toggle-container input:checked ~ .check::after {
+  display: block;
+}
+.toggle-container:hover ~ .check {
+  background-color: #2c3047;
+}
+.toggle-container input:checked ~ .check {
+  background-color: #2196F3;
+}
+.toggle-container .check::after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+[data-tooltip] {
+  transition: all 5s;
+  text-decoration: dashed underline;
+  cursor: help;
+}
+[data-tooltip]::after {
+  opacity: 0;
+}
+[data-tooltip]:hover::after {
+  display: block;
+  left: 50%;
+  position: absolute;
+  content: attr(data-tooltip);
+  /* border: 2px solid black; */
+  border-radius: 6px;
+  background: #23252e;
+  padding: .25em;
+  opacity: 1;
+  transition: all .5s;
 }
