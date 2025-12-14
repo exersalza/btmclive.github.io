@@ -122,6 +122,9 @@ function highlightLine(line, filter, rgx) {
   if (rgx) {
     let regex = new RegExp(filter, case_sens ? "g" : "ig");
     return line.replaceAll(regex, (match) => {
+      if (match.length == 0) {
+        return "";
+      }
       occurance_count++;
       return `<span style='color:red;'>${match}</span>`;
     });
@@ -160,10 +163,12 @@ document.querySelector("#date-search #submit").addEventListener("click", async f
 })
 document.getElementById("case-toggle").addEventListener("click", function (ev) {
   case_sens = !case_sens;
+  ev.target.setAttribute("title", case_sens ? "Disable Case Sensitivity" : "Enable Case Sensitivity")
   ev.target.setAttribute("data-enabled", case_sens);
 })
 document.getElementById("regex-toggle").addEventListener("click", function (ev) {
   regex_enabled = !regex_enabled;
   ev.target.setAttribute("data-enabled", regex_enabled);
+  ev.target.setAttribute("title", regex_enabled ? "Disable Regex" : "Enable Regex")
   ev.target.closest(".body-section").querySelector(`[name='string']`).setAttribute("placeholder", regex_enabled ? "String/Regex pattern" : "String")
 })
