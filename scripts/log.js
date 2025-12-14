@@ -172,3 +172,16 @@ document.getElementById("regex-toggle").addEventListener("click", function (ev) 
   ev.target.setAttribute("title", regex_enabled ? "Disable Regex" : "Enable Regex")
   ev.target.closest(".body-section").querySelector(`[name='string']`).setAttribute("placeholder", regex_enabled ? "String/Regex pattern" : "String")
 })
+document.getElementById("cbtn").addEventListener("click", function (ev) {
+  navigator.clipboard.writeText(ev.target.closest(".body-section").querySelector(".logDisplay").innerText.trim());
+  ev.target.style.backgroundColor = "#194d33";
+  setTimeout(() => {
+    ev.target.style.backgroundColor = "";
+  }, 2000);
+  const notif = document.getElementById("notif");
+    notif.innerHTML = "Copied";
+    notif.className = "shown";
+    setTimeout(() => {
+        notif.classList.remove("shown");
+    }, 2000);
+})
