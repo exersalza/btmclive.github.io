@@ -1,9 +1,12 @@
+let occurance_count = 0;
+let regex_enabled = false;
+let case_sens = false;
+
 async function submit(type, inputs) {
+  occurance_count = 0;
   if (type == "user") {
     const out = document.querySelector("#user-search .logDisplay");
-    let user = inputs["user"].value;
-    let string = inputs["string"].value;
-    await searchUser(user, string, out);
+    await searchUser(inputs["user"].value, inputs["string"].value, out);
   } else if (type == "date") {
     const out = document.querySelector("#date-search .logDisplay");
     let fromDate = inputs["start-date"].value;
@@ -13,25 +16,6 @@ async function submit(type, inputs) {
     await searchDate(fromDate, toDate, user, string, out);
   }
 }
-
-document.querySelector("#user-search #submit").addEventListener("click", async function(ev) {
-  const inputs = ev.target.closest(".input-form").elements;
-  let user = inputs["user"].value;
-  let string = inputs["string"].value;
-  if ((user && string) == "") {
-    return
-  }
-  await submit("user", inputs);
-})
-document.querySelector("#date-search #submit").addEventListener("click", async function(ev) {
-  const inputs = ev.target.closest(".input-form").elements;
-  let fromDate = inputs["start-date"].value;
-  let toDate = inputs["end-date"].value;
-  if ((fromDate && toDate) == "") {
-    return
-  }
-  await submit("date", inputs);
-})
 
 let forms = document.querySelectorAll(".input-form");
 forms.forEach(form => {
@@ -52,7 +36,7 @@ async function searchUser(user, string, outhtml) {
     let text = processText((await res.text()));
     text = highlightLine(text, string, false);
     outhtml.innerHTML = text;
-    resulttext.innerHTML = `Found <b>${countLines(text)}</b> results in ${performance.now() - start}ms`;
+    resulttext.innerHTML = `Found <b>${countLines(text)}</b> lines/<b>${occurance_count}</b> occurances in ${performance.now() - start}ms`;
   } catch (e) {
     console.error(e.message);
     outhtml.innerHTML = 'Error getting log(s): ' + e.message;
@@ -75,10 +59,10 @@ async function searchDate(from, to, user, string, outhtml) {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     let text = processText((await res.text()));
     if (string !== "") {
-      text = searchR(text, string);
+      text = regex_enabled ? searchRegex(text, string) : search(text, string);
     }
     outhtml.innerHTML = text;
-    resulttext.innerHTML = `Found <b>${countLines(text)}</b> results in ${performance.now() - start}ms`;
+    resulttext.innerHTML = `Found <b>${countLines(text)}</b> lines/<b>${occurance_count}</b> occurances in ${performance.now() - start}ms`;
   } catch (e) {
     console.error(e.message);
     outhtml.innerHTML = 'Error getting log(s): ' + e.message;
@@ -105,13 +89,17 @@ function processText(text) {
 function search(text, filter) {
   let lines = text.split("\n");
   let matches = lines
-    .map(line => { return highlightLine(line, filter); }) 
-    .filter((line) => line.toLowerCase().includes(filter)); 
+    .filter((line) => {
+      line = case_sens ? line : line.toLowerCase();
+      filter = case_sens ? filter : filter.toLowerCase();
+      return line.includes(filter);
+    }) 
+    .map(line => { return highlightLine(line, filter); })
   return matches.join("\n");
 }
 
-function searchR(text, filter) {
-  let regex = new RegExp(filter, "ig");
+function searchRegex(text, filter) {
+  let regex = new RegExp(filter, case_sens ? "" : "i");
   let lines = text.split("\n");
   let matches = lines
     .map(line => { return highlightLine(line, filter, true); }) // highlight matches in red
@@ -119,20 +107,63 @@ function searchR(text, filter) {
   return matches.join("\n");
 }
 
+// https://a.opnxng.com/exchange/stackoverflow.com/questions/7313395/case-insensitive-replace-all
+// this is to change replaceAll's functionality to allow case insens replacing
+// used for highlightLine so it highlights words regardless of case between filter - match
+// breaks regex!!!!!!!!!!1
+String.prototype.replaceAllI = function (strReplace, strWith) {
+  // let esc = String(strReplace).replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
+  let esc = String(strReplace);
+  let reg = new RegExp(esc, 'ig');
+  return this.replaceAll(reg, strWith);
+};
+
 function highlightLine(line, filter, rgx) {
   if (rgx) {
-    let regex = new RegExp(filter, "ig");
+    let regex = new RegExp(filter, case_sens ? "g" : "ig");
     return line.replaceAll(regex, (match) => {
+      occurance_count++;
       return `<span style='color:red;'>${match}</span>`;
     });
   } else {
-    return line.replaceAll(filter, (match) => {
+    return line.replaceAllI(filter, (match) => {
+      occurance_count++;
       return `<span style='color:red;'>${match}</span>`;
     });
   }
 }
 
-function countLines(text) {
-  const lines = (text.match(/\n/g) || '').length;
-  return lines;
+function countLines(text) { // counting is hard apparently
+  if ((text.match(/\n/g) == null) && (text.length == 0)) {
+    return 0;
+  } else if (!(text.match(/\n/g) == null)) {
+    return text.split('\n').length;
+  } else { // if there's only one line
+    return 1;
+  }
 }
+
+// -- event listeners -- //
+document.querySelector("#user-search #submit").addEventListener("click", async function(ev) {
+  const inputs = ev.target.closest(".input-form").elements;
+  if ((inputs["user"].value && inputs["string"].value) == "") {
+    return
+  }
+  await submit("user", inputs);
+})
+document.querySelector("#date-search #submit").addEventListener("click", async function(ev) {
+  const inputs = ev.target.closest(".input-form").elements;
+  if ((inputs["start-date"].value && inputs["end-date"].value) == "") {
+    return
+  }
+  await submit("date", inputs);
+})
+document.getElementById("case-toggle").addEventListener("click", function (ev) {
+  case_sens = !case_sens;
+  ev.target.setAttribute("data-enabled", case_sens);
+})
+document.getElementById("regex-toggle").addEventListener("click", function (ev) {
+  regex_enabled = !regex_enabled;
+  ev.target.setAttribute("data-enabled", regex_enabled);
+  ev.target.closest(".body-section").querySelector(`[name='string']`).setAttribute("placeholder", regex_enabled ? "String/Regex pattern" : "String")
+})

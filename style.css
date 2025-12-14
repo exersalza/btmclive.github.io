@@ -617,3 +617,19 @@ input:required {
   opacity: 1;
   transition: all .5s;
 }
+button[data-enabled="false"] {
+  background: #2d2e33;
+  transition: background .5s;
+}
+button[data-enabled="false"]:hover {
+  background: #3c3f4c;
+  transition: background .5s;
+}
+button[data-enabled="true"] {
+  background: #346231;
+  transition: background .5s;
+}
+button[data-enabled="true"]:hover {
+  background: #277f22;
+  transition: background .5s;
+}
