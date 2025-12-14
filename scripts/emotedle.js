@@ -128,7 +128,6 @@ window.addEventListener("DOMContentLoaded", async () => {
             localStorage.setItem("emotedle", JSON.stringify(
                 { date: day, attempt, previousGuesses: previousGuesses, previousResults: previousResults, completed: finished }
             ))
-            // console.log(localStorage.getItem("emotedle"))
         } else {
             console.log("unable to save")
         }
@@ -155,9 +154,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 emoteout.removeChild(tmp);
                 stopLoader();
                 enableInput();
-                }
-            // const res = await fetch(url + attempt, { cache: "no-cache" });
-            // if (!res.ok) throw new Error('HTTP ' + res.status);
+            }
         } catch (err) {
             console.error(err.message);
             emoteout.innerHTML = 'Error getting emote: ' + err.message;
@@ -169,7 +166,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         let e = url + 10;
         let img = new Image();
         img.src = e;
-        img.onload = function() {
+        img.onload = function () {
             document.getElementById('emote-image-container').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
             stopLoader();
         }
@@ -213,7 +210,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     button.addEventListener('click', guessinp);
-    document.getElementById('input-form').addEventListener("submit", function(event) {
+    document.getElementById('input-form').addEventListener("submit", function (event) {
         event.preventDefault();
         if (attempt >= max_attempts) {
             handleAttempt(guess);
@@ -235,7 +232,7 @@ function disableInput() {
     button.setAttribute('disabled', '');
     button.classList.add("disabled")
     input.setAttribute('disabled', '');
-    setTimeout(function() {
+    setTimeout(function () {
         input.classList.add("disabled");
     }, 1000);
 }
@@ -294,7 +291,7 @@ async function fetchEmoteName() {
             disp.querySelector('p').remove();
             disp.appendChild(tmp).innerHTML = "Failed to get emote. Please wait.";
             console.error(err.message);
-            setTimeout(() => {if (document.hidden()) { window.location.reload(); }}, 5000);
+            setTimeout(() => { if (document.hidden()) { window.location.reload(); } }, 5000);
         }, 1000);
     }
 }
@@ -303,7 +300,7 @@ function share() {
     document.getElementById('button-container').innerHTML = `<button id="cbtn">Share</button>`;
     const copybtn = document.getElementById('cbtn');
     shareString = `Emotedle #${dateDiff} ${previousResults} https://btmclive.github.io/emotedle`;
-    copybtn.addEventListener("click", function() {
+    copybtn.addEventListener("click", function () {
         navigator.clipboard.writeText(shareString.replaceAll(',', ''));
         copybtn.style.backgroundColor = "#194d33";
         copybtn.innerHTML = `Copied`;

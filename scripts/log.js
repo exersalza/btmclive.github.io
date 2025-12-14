@@ -19,7 +19,7 @@ async function submit(type, inputs) {
 
 let forms = document.querySelectorAll(".input-form");
 forms.forEach(form => {
-  form.addEventListener("submit", function(event) {
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
   })
 })
@@ -73,11 +73,11 @@ function processText(text) {
   return text
     .replaceAll(/[&<>"']/g, (char) => { // escape html characters
       switch (char) {
-          case '&': return '&amp;';
-          case '<': return '&lt;';
-          case '>': return '&gt;';
-          case '"': return '&quot;';
-          case "'": return '&#039;';
+        case '&': return '&amp;';
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '"': return '&quot;';
+        case "'": return '&#039;';
       }
     })
     .replaceAll(" #btmc", '') // remove "#btmc"
@@ -93,7 +93,7 @@ function search(text, filter) {
       line = case_sens ? line : line.toLowerCase();
       filter = case_sens ? filter : filter.toLowerCase();
       return line.includes(filter);
-    }) 
+    })
     .map(line => { return highlightLine(line, filter); })
   return matches.join("\n");
 }
@@ -147,14 +147,14 @@ function countLines(text) { // counting is hard apparently
 }
 
 // -- event listeners -- //
-document.querySelector("#user-search #submit").addEventListener("click", async function(ev) {
+document.querySelector("#user-search #submit").addEventListener("click", async function (ev) {
   const inputs = ev.target.closest(".input-form").elements;
   if ((inputs["user"].value && inputs["string"].value) == "") {
     return
   }
   await submit("user", inputs);
 })
-document.querySelector("#date-search #submit").addEventListener("click", async function(ev) {
+document.querySelector("#date-search #submit").addEventListener("click", async function (ev) {
   const inputs = ev.target.closest(".input-form").elements;
   if ((inputs["start-date"].value && inputs["end-date"].value) == "") {
     return

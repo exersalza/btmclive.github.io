@@ -1,22 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
     // load
     fetch('https://btmcs-backend.onrender.com/twitch/data')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        data.forEach(async entry => {
-            await Promise.all([fetchChannelInfo(entry), fetchStreamInfo(entry)]);
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(async entry => {
+                await Promise.all([fetchChannelInfo(entry), fetchStreamInfo(entry)]);
+            })
         })
-    })
-    .catch(error => {
-        console.error("Error getting Twitch status: ", error);
-    });
+        .catch(error => {
+            console.error("Error getting Twitch status: ", error);
+        });
 })
 
 async function fetchFollowers() {
     try {
         const res = await fetch("https://btmcs-backend.onrender.com/twitch/followers", { cache: "no-cache" });
-        console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let followers = Number(await res.text());
         return followers;
@@ -28,7 +26,6 @@ async function fetchFollowers() {
 async function fetchLatestStream() {
     try {
         const res = await fetch("https://btmcs-backend.onrender.com/twitch/latest", { cache: "no-cache" });
-        console.log("requested");
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let stream = await res.text();
         return stream;
@@ -47,7 +44,6 @@ async function fetchChannelInfo(entry) {
     const counter = new CounterAnime(f_value, followers);
     setInterval(async () => {
         counter.setNumber(f_value);
-        console.log("updated");
     }, 60000);
     channel_container.appendChild(followers);
     followers.appendChild(follower_title);

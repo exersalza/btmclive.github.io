@@ -1,5 +1,5 @@
 // create a box-shadow around an svg with the color based on the svg's color
-window.addEventListener("DOMContentLoaded", (event) => {
+window.addEventListener("DOMContentLoaded", () => {
     setTimeout(function(){
     const el = document.getElementsByClassName('linkicon'); // el = element
 
@@ -44,8 +44,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         const ch = el.querySelector(':first-child');
         ch.style.boxShadow = `none`;
     }
-    
 }, 1000);
-
 // ----- end -----
 });
