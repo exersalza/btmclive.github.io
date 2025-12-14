@@ -239,6 +239,7 @@ input:required {
 }
 #emote-image {
   object-fit: contain;
+  max-width: 256px;
 }
 #twitch-status {
   display: flex;
