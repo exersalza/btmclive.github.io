@@ -532,6 +532,7 @@ input:required {
 }
 .logDisplay b {
   font-weight:600;
+  color: inherit;
 }
 .logDisplay a, .logDisplay span, .logDisplay b {
   font-family:'JetBrains Mono';
