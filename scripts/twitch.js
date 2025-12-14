@@ -54,12 +54,7 @@ async function fetchChannelInfo(entry) {
     
     document.getElementsByClassName("numberAnimation")[0].addEventListener("click", function () {
         navigator.clipboard.writeText(f_value);
-        const notif = document.getElementById("notif");
-        notif.innerHTML = "Copied";
-        notif.className = "shown";
-        setTimeout(() => {
-            notif.classList.remove("shown");
-        }, 1500);
+        createNotif("Copied", 2000);
     })
     if (entry.is_live == true) { // live
         const pinger = `<svg height="16" width="16" id="Pinger" class="live-indicator">

@@ -178,10 +178,5 @@ document.getElementById("cbtn").addEventListener("click", function (ev) {
   setTimeout(() => {
     ev.target.style.backgroundColor = "";
   }, 2000);
-  const notif = document.getElementById("notif");
-    notif.innerHTML = "Copied";
-    notif.className = "shown";
-    setTimeout(() => {
-        notif.classList.remove("shown");
-    }, 2000);
+  createNotif("Copied", 2000);
 })

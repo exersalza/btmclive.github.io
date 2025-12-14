@@ -1,3 +1,4 @@
+// requires a <div(?) id="notif">
 function createNotif(text, duration) {
     const notif = document.getElementById("notif");
     notif.innerHTML = text;
