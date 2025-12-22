@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Chat Utils - BTMC</title>
+  <script src="scripts/nav.js"></script>
+  <script src="scripts/load-nav.js"></script>
+  <script src="scripts/notif.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="NavBar-wrap"></div>
+  <h1 style="text-align: center;">MCSR</h1>
+  <h6 style="text-align: center;">too lazy to work on this fully, so it's just a death counter for now</h6>
+  <div class="body" id="body">
+    <div id="body-section">
+        <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
+        <button id="request" onclick="showDeaths()">Update count</button>
+        <p>Updates every 5 minutes</p>
+    </div>
+    <div id="notif"></div>
+  </div>
+  <script>
+    async function fetchDeaths() {
+        try {
+            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/deaths", { cache: "no-cache" });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            let stream = await res.text();
+            return stream;
+        } catch (e) {
+            return "Failed to fetch deaths: " + e;
+        }
+    }
+    async function showDeaths() {
+        let text = await fetchDeaths();
+        document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
+        document.getElementById("death-display").innerHTML = text;
+        createNotif("Updated", 1700)
+    }
+    document.addEventListener("DOMContentLoaded", showDeaths());
+    setInterval(() => {
+        showDeaths();
+    }, (1000*60*5));
+    </script>
+</body>
+</html>

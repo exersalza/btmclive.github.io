@@ -41,6 +41,7 @@
   --accent-2-hover: #342e65;
   --accent-3: #d5c8ff;
   --accent-disabled: #23252e;
+  --accent-success: #194d33;
 }
 * {
   padding:0;
