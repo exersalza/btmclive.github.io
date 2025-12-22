@@ -31,8 +31,8 @@
         }
     }
     async function showDeaths() {
-        let text = await fetchDeaths();
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
+        let text = await fetchDeaths();
         document.getElementById("death-display").innerHTML = text;
         createNotif("Updated", 1700)
     }
