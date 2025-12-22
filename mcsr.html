@@ -15,7 +15,7 @@
     <div id="body-section">
         <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
         <button id="request" onclick="showDeaths()">Update count</button>
-        <p>Updates every 5 minutes</p>
+        <p>Updates every 2.5 minutes</p>
     </div>
     <div id="notif"></div>
   </div>
@@ -39,7 +39,7 @@
     document.addEventListener("DOMContentLoaded", showDeaths());
     setInterval(() => {
         showDeaths();
-    }, (1000*60*5));
+    }, (1000*60*2.5));
     </script>
 </body>
 </html>
