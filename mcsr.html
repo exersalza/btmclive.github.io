@@ -16,6 +16,7 @@
         <p id="elo-display" style="font-family: JetBrains Mono;"">- Elo</p>
         <p id="pb-display" style="font-family: JetBrains Mono;"">--:-- | --:--</p>
         <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
+        <p id="ratio-display" style="font-family: JetBrains Mono;">..</p>
         <button id="request" onclick="showInfo()">Update count</button>
         <p>Updates every 2.5 minutes</p>
     </div>
@@ -47,8 +48,8 @@
         document.getElementById("elo-display").innerHTML = `${data.elo} elo`;
         document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
-        let deaths = await fetchDeaths();
-        document.getElementById("death-display").innerHTML = deaths;
+        document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
+        document.getElementById("ratio-display").innerHTML = `${Number.parseFloat(data.deaths / data.matches).toFixed(2)} death to match ratio`;
         createNotif("Updated", 1700)
     }
     document.addEventListener("DOMContentLoaded", showInfo());
