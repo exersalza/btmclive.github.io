@@ -10,11 +10,13 @@
 <body>
 <div class="NavBar-wrap"></div>
   <h1 style="text-align: center;">MCSR</h1>
-  <h6 style="text-align: center;">too lazy to work on this fully, so it's just a death counter for now</h6>
+  <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
     <div id="body-section">
+        <p id="elo-display" style="font-family: JetBrains Mono;"">- Elo</p>
+        <p id="pb-display" style="font-family: JetBrains Mono;"">--:-- | --:--</p>
         <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
-        <button id="request" onclick="showDeaths()">Update count</button>
+        <button id="request" onclick="showInfo()">Update count</button>
         <p>Updates every 2.5 minutes</p>
     </div>
     <div id="notif"></div>
@@ -22,7 +24,7 @@
   <script>
     async function fetchDeaths() {
         try {
-            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/deaths", { cache: "no-cache" });
+            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/deaths", { cache: "no-cache"});
             if (!res.ok) throw new Error('HTTP ' + res.status);
             let stream = await res.text();
             return stream;
@@ -30,15 +32,28 @@
             return "Failed to fetch deaths: " + e;
         }
     }
-    async function showDeaths() {
+    async function fetchData() {
+        try {
+            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/data", { cache: "no-cache" });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            let stream = await res.text();
+            return stream;
+        } catch (e) {
+            return "Failed to fetch elo: " + e;
+        }
+    }
+    async function showInfo() {
+        const data = JSON.parse(await fetchData());
+        document.getElementById("elo-display").innerHTML = `${data.elo} elo`;
+        document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
-        let text = await fetchDeaths();
-        document.getElementById("death-display").innerHTML = text;
+        let deaths = await fetchDeaths();
+        document.getElementById("death-display").innerHTML = deaths;
         createNotif("Updated", 1700)
     }
-    document.addEventListener("DOMContentLoaded", showDeaths());
+    document.addEventListener("DOMContentLoaded", showInfo());
     setInterval(() => {
-        showDeaths();
+        showInfo();
     }, (1000*60*2.5));
     </script>
 </body>
