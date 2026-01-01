@@ -13,7 +13,7 @@
   <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
     <div id="body-section">
-        <p id="elo-display" style="font-family: JetBrains Mono;"">- Elo</p>
+        <p id="elo-display" style="font-family: JetBrains Mono;"">- elo | - today</p>
         <p id="pb-display" style="font-family: JetBrains Mono;"">--:-- | --:--</p>
         <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
         <p id="daily-display" style="font-family: JetBrains Mono;">..</p>
@@ -46,7 +46,7 @@
     }
     async function showInfo() {
         const data = JSON.parse(await fetchData());
-        document.getElementById("elo-display").innerHTML = `${data.elo} elo`;
+        document.getElementById("elo-display").innerHTML = `${data.elo} elo | ${data.elo_today} elo today `;
         document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
         document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
