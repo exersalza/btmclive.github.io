@@ -13,17 +13,19 @@
   <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
     <div id="body-section">
+        <p id="peak-elo-display" style="font-family: JetBrains Mono;"">Peak elo: - this season | - overall</p>
         <p id="elo-display" style="font-family: JetBrains Mono;"">- elo | - today</p>
-        <p id="pb-display" style="font-family: JetBrains Mono;"">--:-- | --:--</p>
-        <p id="death-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
-        <p id="daily-display" style="font-family: JetBrains Mono;">..</p>
-        <p id="ratio-display" style="font-family: JetBrains Mono;">..</p>
-        <button id="request" onclick="showInfo()">Update count</button>
+        <p id="pb-display" style="font-family: JetBrains Mono;"">Season best: --:-- | All time: --:--</p>
+        <p id="death-display" style="font-family: JetBrains Mono;">-- deaths in -- matches</p>
+        <p id="daily-display" style="font-family: JetBrains Mono;">-- deaths in -- matches today</p>
+        <p id="ratio-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
+        <button id="request-btn" onclick="showInfo()">Update count</button>
         <p>Updates every 2.5 minutes</p>
     </div>
     <div id="notif"></div>
   </div>
   <script>
+    const button = document.getElementById("request-btn");
     async function fetchDeaths() {
         try {
             const res = await fetch("https://btmcs-backend.onrender.com/mcsr/deaths", { cache: "no-cache"});
@@ -45,13 +47,18 @@
         }
     }
     async function showInfo() {
+        button.setAttribute('disabled', '');
+        button.classList.add("disabled");
         const data = JSON.parse(await fetchData());
-        document.getElementById("elo-display").innerHTML = `${data.elo} elo | ${data.elo_today} elo today `;
+        document.getElementById("peak-elo-display").innerHTML = `Peak elo: ${data.elo_peak_season} this season | ${data.elo_peak_overall} overall`;
+        document.getElementById("elo-display").innerHTML = `${data.elo} elo | ${data.elo_today} elo today`;
         document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
         document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
         document.getElementById("daily-display").innerHTML = `${data.deaths_today} deaths in ${data.matches_today} matches today`;
         document.getElementById("ratio-display").innerHTML = `Death to match ratio: ${Number.parseFloat(data.deaths / data.matches).toFixed(2)} overall | ${Number.parseFloat(data.deaths_today / data.matches_today).toFixed(2)} today`;
+        button.removeAttribute('disabled');
+        button.classList.remove("disabled");
         createNotif("Updated", 1700)
     }
     document.addEventListener("DOMContentLoaded", showInfo());
