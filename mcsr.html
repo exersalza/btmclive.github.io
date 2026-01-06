@@ -13,6 +13,7 @@
   <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
     <div id="body-section">
+        <span id="rank-display" style="font-family: JetBrains Mono;"">---</span>
         <p id="peak-elo-display" style="font-family: JetBrains Mono;"">Peak elo: - this season | - overall</p>
         <p id="elo-display" style="font-family: JetBrains Mono;"">- elo | - today</p>
         <p id="pb-display" style="font-family: JetBrains Mono;"">Season best: --:-- | All time: --:--</p>
@@ -25,6 +26,16 @@
     <div id="notif"></div>
   </div>
   <script>
+    const eloRanges = [
+        { min: 800, max: 899, name: "Iron 3", class: "rank-iron" },
+        { min: 900, max: 999, name: "Gold 1", class: "rank-gold" },
+        { min: 1000, max: 1099, name: "Gold 2", class: "rank-gold" },
+        { min: 1100, max: 1199, name: "Gold 3", class: "rank-gold" },
+        { min: 1200, max: 1299, name: "Emerald 1", class: "rank-em" },
+        { min: 1300, max: 1399, name: "Emerald 2", class: "rank-em" },
+        { min: 1400, max: 1499, name: "Emerald 3", class: "rank-em" },
+        { min: 1500, max: 1599, name: "Diamond 1", class: "rank-dia" },
+    ];
     const button = document.getElementById("request-btn");
     async function fetchDeaths() {
         try {
@@ -50,8 +61,11 @@
         button.setAttribute('disabled', '');
         button.classList.add("disabled");
         const data = JSON.parse(await fetchData());
-        document.getElementById("peak-elo-display").innerHTML = `Peak elo: ${data.elo_peak_season} this season | ${data.elo_peak_overall} overall`;
-        document.getElementById("elo-display").innerHTML = `${data.elo} elo | ${data.elo_today} elo today`;
+        const r = get_rank(data.elo);
+        document.getElementById("rank-display").innerHTML = `${r.name}`;
+        document.getElementById("rank-display").classList = `${r.class} force-large`
+        document.getElementById("peak-elo-display").innerHTML = `Peak elo: <span class="${get_rank(data.elo_peak_season).class}">${data.elo_peak_season}</span> this season | <span class="${get_rank(data.elo_peak_overall).class}">${data.elo_peak_overall}</span> overall`;
+        document.getElementById("elo-display").innerHTML = `<span class="${r.class}">${data.elo}</span> elo | ${data.elo_today} elo today`;
         document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
         document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
@@ -60,6 +74,14 @@
         button.removeAttribute('disabled');
         button.classList.remove("disabled");
         createNotif("Updated", 1700)
+    }
+    function get_rank(elo) {
+        for (const range of eloRanges) {
+            if (elo >= range.min && elo <= range.max) {
+                return { name: range.name, class: range.class };
+            }
+        }
+        return "idk what rank"
     }
     document.addEventListener("DOMContentLoaded", showInfo());
     setInterval(() => {

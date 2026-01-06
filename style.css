@@ -4,6 +4,11 @@
   src: url(/assets/fonts/JetBrainsMono-Regular.woff2) format('woff2');
 }
 @font-face {
+  font-family: 'Maple Mono';
+  font-style: normal;
+  src: url(/assets/fonts/MapleMono-NF-ExtraBold.ttf) format('woff2');
+}
+@font-face {
   font-family: 'NF';
   src: url("https://www.nerdfonts.com/assets/fonts/Symbols-2048-em%20Nerd%20Font%20Complete.woff2") format("woff2");
   font-weight: normal;
@@ -636,4 +641,20 @@ button[data-enabled="true"] {
 button[data-enabled="true"]:hover {
   background: #277f22;
   transition: background .5s;
+}
+.rank-gold {
+  background-image: linear-gradient(to right, rgb(234, 179, 8), rgb(253, 224, 71));
+}
+.rank-em {
+  background-image: linear-gradient(to right, rgb(16, 185, 129), rgb(5, 150, 105));
+}
+.rank-em, .rank-gold {
+  background-clip: text;
+  /* font-family: 'Courier New', Courier, monospace !important; */
+  font-family: "Maple Mono" !important;
+  font-weight: 800;
+  color: transparent;
+}
+.force-large {
+  font-size: large !important;
 }
