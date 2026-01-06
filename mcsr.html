@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="NavBar-wrap"></div>
-  <h1 style="text-align: center;">MCSR</h1>
+  <h1 style="text-align: center;"><a href="https://mcsrranked.com/stats/beasttrollmc" target="_blank">MCSR</a></h1>
   <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
     <div id="body-section">
@@ -63,10 +63,14 @@
         button.classList.add("disabled");
         const data = JSON.parse(await fetchData());
         const r = get_rank(data.elo);
+        let elo_today;
+        if (data.elo_today > 0) {
+            elo_today = `+${data.elo_today}` 
+        }
         document.getElementById("rank-display").innerHTML = `${r.name}`;
         document.getElementById("rank-display").classList = `${r.class} force-large`
         document.getElementById("peak-elo-display").innerHTML = `Peak elo: <span class="${get_rank(data.elo_peak_season).class}">${data.elo_peak_season}</span> this season | <span class="${get_rank(data.elo_peak_overall).class}">${data.elo_peak_overall}</span> overall`;
-        document.getElementById("elo-display").innerHTML = `<span class="${r.class}">${data.elo}</span> elo | ${data.elo_today} elo today`;
+        document.getElementById("elo-display").innerHTML = `<span class="${r.class}">${data.elo}</span> elo | ${elo_today} elo today`;
         document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
         document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
         document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
