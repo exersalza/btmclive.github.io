@@ -5,93 +5,51 @@
   <script src="scripts/nav.js"></script>
   <script src="scripts/load-nav.js"></script>
   <script src="scripts/notif.js"></script>
+  <script src="scripts/mcsr.js" defer></script>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+    <style>p {font-size: 1.08rem}</style>
 <div class="NavBar-wrap"></div>
-  <h1 style="text-align: center;"><a href="https://mcsrranked.com/stats/beasttrollmc" target="_blank">MCSR</a></h1>
+  <h1 style="text-align: center;"><a href="https://mcsrranked.com/stats/beasttrollmc" target="_blank" style="color: #8dbcef;">MCSR</a></h1>
   <h6 style="text-align: center;">augh</h6>
   <div class="body" id="body">
-    <div id="body-section">
-        <span id="rank-display" style="font-family: JetBrains Mono;"">---</span>
-        <p id="peak-elo-display" style="font-family: JetBrains Mono;"">Peak elo: - this season | - overall</p>
-        <p id="elo-display" style="font-family: JetBrains Mono;"">- elo | - today</p>
-        <p id="pb-display" style="font-family: JetBrains Mono;"">Season best: --:-- | All time: --:--</p>
+      <div class="body-section">
+          <h2 style="margin:0 auto; position: relative; top: -1.35em; height: 10px; display: flex; align-items: center; background-color: var(--bg); width: max-content; padding: 4px 8px;">Quick Stats</h2>
+          <span id="rank-display" style="font-family: JetBrains Mono;">---</span>
+          <p id="elo-display" style="font-family: JetBrains Mono;">- elo | - today</p>
         <p id="death-display" style="font-family: JetBrains Mono;">-- deaths in -- matches</p>
         <p id="daily-display" style="font-family: JetBrains Mono;">-- deaths in -- matches today</p>
         <p id="ratio-display" style="font-family: JetBrains Mono;">Loading .. this might take a bit</p>
-        -----<button id="request-btn" onclick="showInfo()">Update count</button>-----
-        <p>Updates every 2.5 minutes</p>
-        <p>"today" counts reset at 0 utc</p>
     </div>
+    <div class="body-section" style="display: flex;justify-content: space-around; font-weight: 600;">
+        <div style="flex: 1 1">
+            <h2>Today</h2>
+            <p id="WLD-today" style="font-family: JetBrains Mono;">-W | -L | -D | -FFs</p>
+            <p id="net-elo" style="font-family: JetBrains Mono;">-- elo</p>
+        </div>
+        <div style="flex: 1 1">
+            <h2>Season</h2>
+            <p id="peak-elo-season" style="font-family: JetBrains Mono;">Peak elo: - (--)</p>
+            <p id="lowest-elo-season" style="font-family: JetBrains Mono;">Lowest elo: - (--)</p>
+            <p id="pb-season" style="font-family: JetBrains Mono;">PB: --:-- </p>
+            <p id="forfeits-season"></p>
+        </div>
+        <div style="flex: 1 1">
+            <h2>Overall</h2>
+            <p id="peak-elo-overall" style="font-family: JetBrains Mono;">Peak elo: - (--)</p>
+            <p id="lowest-elo-overall" style="font-family: JetBrains Mono;">Lowest elo: - (--)</p>
+            <p id="pb-overall" style="font-family: JetBrains Mono;">PB: --:--</p>
+            
+        </div>
+    </div>
+    <div id="other">
+        - - - <button id="request-btn">Refresh</button> - - -
+        <p>Updates every 2.5 minutes</p>
+        <p id="utc-time">"today" counts reset at 0 utc</p>
+    </div>
+    <p id="error"></p>
     <div id="notif"></div>
   </div>
-  <script>
-    const eloRanges = [
-        { min: 800, max: 899, name: "Iron 3", class: "rank-iron" },
-        { min: 900, max: 999, name: "Gold 1", class: "rank-gold" },
-        { min: 1000, max: 1099, name: "Gold 2", class: "rank-gold" },
-        { min: 1100, max: 1199, name: "Gold 3", class: "rank-gold" },
-        { min: 1200, max: 1299, name: "Emerald 1", class: "rank-em" },
-        { min: 1300, max: 1399, name: "Emerald 2", class: "rank-em" },
-        { min: 1400, max: 1499, name: "Emerald 3", class: "rank-em" },
-        { min: 1500, max: 1599, name: "Diamond 1", class: "rank-dia" },
-    ];
-    const button = document.getElementById("request-btn");
-    async function fetchDeaths() {
-        try {
-            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/deaths", { cache: "no-cache"});
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            let stream = await res.text();
-            return stream;
-        } catch (e) {
-            return "Failed to fetch deaths: " + e;
-        }
-    }
-    async function fetchData() {
-        try {
-            const res = await fetch("https://btmcs-backend.onrender.com/mcsr/data", { cache: "no-cache" });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            let stream = await res.text();
-            return stream;
-        } catch (e) {
-            return "Failed to fetch elo: " + e;
-        }
-    }
-    async function showInfo() {
-        button.setAttribute('disabled', '');
-        button.classList.add("disabled");
-        const data = JSON.parse(await fetchData());
-        const r = get_rank(data.elo);
-        let elo_today;
-        if (data.elo_today > 0) {
-            elo_today = `+${data.elo_today}` 
-        }
-        document.getElementById("rank-display").innerHTML = `${r.name}`;
-        document.getElementById("rank-display").classList = `${r.class} force-large`
-        document.getElementById("peak-elo-display").innerHTML = `Peak elo: <span class="${get_rank(data.elo_peak_season).class}">${data.elo_peak_season}</span> this season | <span class="${get_rank(data.elo_peak_overall).class}">${data.elo_peak_overall}</span> overall`;
-        document.getElementById("elo-display").innerHTML = `<span class="${r.class}">${data.elo}</span> elo | ${elo_today} elo today`;
-        document.getElementById("pb-display").innerHTML = `Season best: ${data.season_best} | All time: ${data.all_best}`;
-        document.getElementById("death-display").innerHTML = "Loading .. this might take a bit";
-        document.getElementById("death-display").innerHTML = `${data.deaths} deaths in ${data.matches} matches`;
-        document.getElementById("daily-display").innerHTML = `${data.deaths_today} deaths in ${data.matches_today} matches today`;
-        document.getElementById("ratio-display").innerHTML = `Death to match ratio: ${Number.parseFloat(data.deaths / data.matches).toFixed(2)} overall | ${Number.parseFloat(data.deaths_today / data.matches_today).toFixed(2)} today`;
-        button.removeAttribute('disabled');
-        button.classList.remove("disabled");
-        createNotif("Updated", 1700)
-    }
-    function get_rank(elo) {
-        for (const range of eloRanges) {
-            if (elo >= range.min && elo <= range.max) {
-                return { name: range.name, class: range.class };
-            }
-        }
-        return "idk what rank"
-    }
-    document.addEventListener("DOMContentLoaded", showInfo());
-    setInterval(() => {
-        showInfo();
-    }, (1000*60*2.5));
-    </script>
 </body>
 </html>
