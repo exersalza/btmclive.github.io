@@ -63,11 +63,13 @@ async function showInfo() {
     | <span style="color: #60a5fa">${data.today.draws}D</span>
     | ${data.today.forfeits}FFs`;
     document.getElementById("net-elo").innerHTML = `${elo_today} elo`;
+    document.getElementById("ff-wins-today").innerHTML = `${data.today.forfeit_wins} wins by forfeits`;
     // -- season -- //
     document.getElementById("peak-elo-season").innerHTML = `Peak elo: <span class="${getRank(data.season.elo_peak).class}">${data.season.elo_peak} (${getRank(data.season.elo_peak).short})</span>`;
     document.getElementById("lowest-elo-season").innerHTML = `Lowest elo: <span class="${getRank(data.season.elo_lowest).class}">${data.season.elo_lowest} (${getRank(data.season.elo_lowest).short})</span>`;
     document.getElementById("pb-season").innerHTML = `PB: ${data.season.pb}`;
     document.getElementById("forfeits-season").innerHTML = `Forfeits: ${data.season.forfeits}`;
+    document.getElementById("ff-wins-season").innerHTML = `${data.season.forfeit_wins} wins by forfeits`;
     // -- overall -- //
     document.getElementById("pb-overall").innerHTML = `PB: ${data.overall.pb}`;
     document.getElementById("peak-elo-overall").innerHTML = `Peak elo: <span class="${getRank(data.overall.elo_peak).class}">${data.overall.elo_peak} (${getRank(data.overall.elo_peak).short})</span>`;
