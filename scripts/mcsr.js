@@ -12,7 +12,7 @@ const button = document.getElementById("request-btn");
 
 function getTime() {
     const pst = new Date('1970-01-01T08:00:00Z');
-    document.getElementById("utc-time").innerHTML += ` (${utc0.toLocaleTimeString()})`;
+    document.getElementById("utc-time").innerHTML += ` (${pst.toLocaleTimeString()})`;
 }
 async function fetchDeaths() {
     try {
