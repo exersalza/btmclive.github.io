@@ -11,7 +11,7 @@ const eloRanges = [
 const button = document.getElementById("request-btn");
 
 function getTime() {
-    const utc0 = new Date('1970-01-01T00:00:00Z');
+    const pst = new Date('1970-01-01T08:00:00Z');
     document.getElementById("utc-time").innerHTML += ` (${utc0.toLocaleTimeString()})`;
 }
 async function fetchDeaths() {
