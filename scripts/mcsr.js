@@ -64,10 +64,13 @@ async function showInfo() {
     | ${data.today.forfeits}FFs`;
     document.getElementById("net-elo").innerHTML = `${elo_today} elo`;
     document.getElementById("ff-wins-today").innerHTML = `${data.today.forfeit_wins} wins by forfeits`;
+    document.getElementById("slowest-today").innerHTML = `Slowest time: ${data.today.slowest}`;
+    document.getElementById("fastest-today").innerHTML = `PB: ${data.today.fastest}`;
     // -- season -- //
     document.getElementById("peak-elo-season").innerHTML = `Peak elo: <span class="${getRank(data.season.elo_peak).class}">${data.season.elo_peak} (${getRank(data.season.elo_peak).short})</span>`;
     document.getElementById("lowest-elo-season").innerHTML = `Lowest elo: <span class="${getRank(data.season.elo_lowest).class}">${data.season.elo_lowest} (${getRank(data.season.elo_lowest).short})</span>`;
     document.getElementById("pb-season").innerHTML = `PB: ${data.season.pb}`;
+    document.getElementById("slowest-season").innerHTML = `Slowest time: ${data.season.slowest}`;
     document.getElementById("forfeits-season").innerHTML = `Forfeits: ${data.season.forfeits}`;
     document.getElementById("ff-wins-season").innerHTML = `${data.season.forfeit_wins} wins by forfeits`;
     // -- overall -- //
