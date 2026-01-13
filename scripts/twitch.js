@@ -62,6 +62,7 @@ async function fetchChannelInfo(entry) {
         let livestat = document.createElement("a");
             livestat.innerHTML = `Live`;
             livestat.style.fontWeight = `Bold`;
+            livestat.style.lineHeight = "1em";
             livestat.href = "https://twitch.tv/btmc";
         div.appendChild(livestat);
         channel_container.appendChild(div)
@@ -74,6 +75,7 @@ async function fetchChannelInfo(entry) {
             div.innerHTML += `${pinger}`;
         let livestat = document.createElement('p');
             livestat.style.color = "gray";
+            livestat.style.lineHeight = "1em";
             livestat.innerHTML = `Offline`;
         div.appendChild(livestat);
         channel_container.appendChild(div);
