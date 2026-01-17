@@ -1,6 +1,15 @@
 let occurance_count = 0;
 let regex_enabled = false;
 let case_sens = false;
+const excludeFilters = [
+  "osu.ppy.sh/b/\\d+", "🪙 from .*\\d+ total casts", "BTMC.*gift(ed|ing)", ": !\\w+",
+  "you are already in the queue", "try fishing to get", "osu/tosu is not running", "kick/punch is ready",
+  "have \\d+ coins", "won \\d+ points and \\d+ tickets", "cool down timer", "100%: \\d+.*pp", "@\\w+,? '?.*by.*https",
+  "\\[KUKORO\\]", "FREEDOM DiVE REiMAGINED", "\\[osu\\] ", "- \\d+pp",
+  "gifted a Tier \\d sub to", "you are ranked #",
+  "\\] (l3lackshark|fossabot|streamelements|sheppsubot|ravenfallofficial|thatonebotwhospamspogpega|bigtimemassivecash|sheepposubot):",
+]; // patterns for bot/cmd/spam messages
+const filterRegex = new RegExp(`${excludeFilters.join("|")}`, "");
 
 async function submit(type, inputs) {
   occurance_count = 0;
@@ -8,12 +17,15 @@ async function submit(type, inputs) {
     const out = document.querySelector("#user-search .logDisplay");
     await searchUser(inputs["user"].value, inputs["string"].value, out);
   } else if (type == "date") {
-    const out = document.querySelector("#date-search .logDisplay");
-    let fromDate = inputs["start-date"].value;
-    let toDate = inputs["end-date"].value;
-    let user = inputs["user"].value;
-    let string = inputs["string"].value;
-    await searchDate(fromDate, toDate, user, string, out);
+      const out = document.querySelector("#date-search .logDisplay");
+      let fromDate = inputs["start-date"].value;
+      let toDate = inputs["end-date"].value;
+      let user = inputs["user"].value;
+      let string = inputs["string"].value;
+      await searchDate(fromDate, toDate, user, string, out);
+  } else if (type == "random") {
+      const out = document.querySelector("#random-search .logDisplay");
+      await searchRandom(inputs["user"].value, inputs["string"].value, out);
   }
 }
 
@@ -63,6 +75,34 @@ async function searchDate(from, to, user, string, outhtml) {
     }
     outhtml.innerHTML = text;
     resulttext.innerHTML = `Found <b>${countLines(text)}</b> lines/<b>${occurance_count}</b> occurances in ${performance.now() - start}ms`;
+  } catch (e) {
+    console.error(e.message);
+    outhtml.innerHTML = 'Error getting log(s): ' + e.message;
+  }
+}
+
+async function searchRandom(user, string, outhtml) {
+  outhtml.innerHTML = "Getting logs, please wait..";
+  let req;
+  if (string == null || string == "") {
+    req = `https://logs.nadeko.net/channel/btmc/user/${user}/random`;
+  } else {
+    req = `https://logs.nadeko.net/channel/btmc/user/${user}/search?q=${string}`;
+  }
+  try {
+    const res = await fetch(req, { cache: "no-cache" });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    let lines = (await res.text()).split("\n");
+    let line = lines[Math.floor(Math.random() * (lines.length - 1))];
+
+    let text = processText(line);
+    console.log(text);
+    if (filterRegex.test(text)) { // disables button and rerandomizes if the message is spam/bot
+      searchRandom(user, string, outhtml);
+      return
+    } else {
+      outhtml.innerHTML = text;
+    }
   } catch (e) {
     console.error(e.message);
     outhtml.innerHTML = 'Error getting log(s): ' + e.message;
@@ -161,6 +201,16 @@ document.querySelector("#date-search #submit").addEventListener("click", async f
   }
   await submit("date", inputs);
 })
+document.querySelector("#random-search #submit").addEventListener("click", async function (ev) {
+  const inputs = ev.target.closest(".input-form").elements;
+  if (inputs["user"].value == "") {
+    return
+  } else if (inputs["string"].value == "") {
+    await submit("random", inputs);
+  } else {
+    await submit("random", inputs); // to be added date filter
+  }
+})
 document.getElementById("case-toggle").addEventListener("click", function (ev) {
   case_sens = !case_sens;
   ev.target.setAttribute("title", case_sens ? "Disable Case Sensitivity" : "Enable Case Sensitivity")
@@ -172,11 +222,13 @@ document.getElementById("regex-toggle").addEventListener("click", function (ev) 
   ev.target.setAttribute("title", regex_enabled ? "Disable Regex" : "Enable Regex")
   ev.target.closest(".body-section").querySelector(`[name='string']`).setAttribute("placeholder", regex_enabled ? "String/Regex pattern" : "String")
 })
-document.getElementById("cbtn").addEventListener("click", function (ev) {
-  navigator.clipboard.writeText(ev.target.closest(".body-section").querySelector(".logDisplay").innerText.trim());
-  ev.target.style.backgroundColor = "#194d33";
-  setTimeout(() => {
-    ev.target.style.backgroundColor = "";
-  }, 2000);
-  createNotif("Copied", 2000);
+document.querySelectorAll("#cbtn").forEach(btn => {
+  btn.addEventListener("click", function (ev) {
+    navigator.clipboard.writeText(ev.target.closest(".body-section").querySelector(".logDisplay").innerText.trim());
+    ev.target.style.backgroundColor = "#194d33";
+    setTimeout(() => {
+      ev.target.style.backgroundColor = "";
+    }, 2000);
+    createNotif("Copied", 1700);
+  })
 })
