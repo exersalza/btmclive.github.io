@@ -279,8 +279,8 @@ input:required {
   background-color: var(--accent-2);
   text-align: center;
   border-radius: 8px;
-  padding: 8px; 
-  position: fixed; 
+  padding: 8px;
+  position: fixed;
   z-index: 1;
   left: 50%;
   bottom: 0;
