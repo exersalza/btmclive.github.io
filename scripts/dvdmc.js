@@ -21,14 +21,14 @@ function getLogo(url, size) {
     let image = document.createElement('img');
 
     image.src = url;
-    image.style.width = size[0]+'px';
-    image.style.height = size[1]+'px';
+    image.style.width = size[0] + 'px';
+    image.style.height = size[1] + 'px';
 
     return image;
 }
 
 // constants
-const size = [300,300];
+const size = [300, 300];
 const logo = getLogo('images/channels4_profile.jpg', size);
 const pauseButton = document.getElementById('pausebmcButton');
 const spinButton = document.getElementById('spinbmcButton');
@@ -41,7 +41,7 @@ const speed = 1.0;
 let x = randint(1, window.innerWidth - size[0] - 10);
 let y = randint(1, window.innerHeight - size[1] - 1);
 let isPaused = false; // pause state
-let isSpin= false; // spin state
+let isSpin = false; // spin state
 
 let direction = [1, 1];
 
@@ -86,14 +86,14 @@ pauseButton.addEventListener('click', () => {
     pauseButton.style.backgroundColor = isPaused ? "#2b2020" : "#20212b" // change button color
 });
 
-
 spinButton.addEventListener('click', () => {
     isSpin = !isSpin;
 
     if (isSpin) {
         logo.style.animation = "5s linear infinite running Spin";
     } else {
-        logo.style.animation = "";
+        logo.style.animationPlayState = "paused";
+
     }
 
     spinButton.innerText = isSpin ? 'Unspin bmc' : 'Spin bmc'; // change button text
