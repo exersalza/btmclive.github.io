@@ -1,12 +1,13 @@
 let occurance_count = 0;
 let regex_enabled = false;
 let case_sens = false;
+let attempts = 2;
 const excludeFilters = [
   "osu.ppy.sh/b/\\d+", "🪙 from .*\\d+ total casts", "BTMC.*gift(ed|ing)", ": !\\w+",
   "you are already in the queue", "try fishing to get", "osu/tosu is not running", "kick/punch is ready",
   "have \\d+ coins", "won \\d+ points and \\d+ tickets", "cool down timer", "100%: \\d+.*pp", "@\\w+,? '?.*by.*https",
   "\\[KUKORO\\]", "FREEDOM DiVE REiMAGINED", "\\[osu\\] ", "- \\d+pp",
-  "gifted a Tier \\d sub to", "you are ranked #",
+  "gifted a Tier \\d sub to", "you are ranked #", "you own \\d coin",
   "\\] (l3lackshark|fossabot|streamelements|sheppsubot|ravenfallofficial|thatonebotwhospamspogpega|bigtimemassivecash|sheepposubot):",
 ]; // patterns for bot/cmd/spam messages
 const filterRegex = new RegExp(`${excludeFilters.join("|")}`, "");
@@ -24,7 +25,7 @@ async function submit(type, inputs) {
       let string = inputs["string"].value;
       await searchDate(fromDate, toDate, user, string, out);
   } else if (type == "random") {
-      const out = document.querySelector("#random-search .logDisplay");
+    const out = document.querySelector("#random-search .logDisplay");
       await searchRandom(inputs["user"].value, inputs["string"].value, out);
   }
 }
@@ -81,13 +82,14 @@ async function searchDate(from, to, user, string, outhtml) {
   }
 }
 
-async function searchRandom(user, string, outhtml) {
-  outhtml.innerHTML = "Getting logs, please wait..";
+async function searchRandom(user, string, outhtml, from, to) {
   let req;
   if (string == null || string == "") {
     req = `https://logs.nadeko.net/channel/btmc/user/${user}/random`;
-  } else {
+  } else if ((from == "" || to == "") && string !== "") {
     req = `https://logs.nadeko.net/channel/btmc/user/${user}/search?q=${string}`;
+  } else {
+    req = `https://logs.nadeko.net/channel/btmc/user/${user}?from=${from}T00:00:00Z&to=${to}T00:00:00Z`;
   }
   try {
     const res = await fetch(req, { cache: "no-cache" });
@@ -96,12 +98,18 @@ async function searchRandom(user, string, outhtml) {
     let line = lines[Math.floor(Math.random() * (lines.length - 1))];
 
     let text = processText(line);
-    console.log(text);
     if (filterRegex.test(text)) { // disables button and rerandomizes if the message is spam/bot
-      searchRandom(user, string, outhtml);
+      outhtml.innerHTML = `Getting random non-bot message, please wait.. (Attempt ${attempts})`;
+      if (attempts > 15) {
+        outhtml.innerHTML = `Could not find any non-bot messages in ${attempts} attempts`;
+        return
+      }
+      searchRandom(user, string, outhtml, from, to);
+      attempts++;
       return
     } else {
       outhtml.innerHTML = text;
+      attempts = 1;
     }
   } catch (e) {
     console.error(e.message);
@@ -203,12 +211,22 @@ document.querySelector("#date-search #submit").addEventListener("click", async f
 })
 document.querySelector("#random-search #submit").addEventListener("click", async function (ev) {
   const inputs = ev.target.closest(".input-form").elements;
-  if (inputs["user"].value == "") {
+  if (inputs["user"].value == "") { // no user input
     return
-  } else if (inputs["string"].value == "") {
+  } else if (inputs["string"].value == "") { // no string input
+    await submit("random", inputs);
+  } else if ((inputs["start-date"].value && inputs["end-date"].value) == (""||null)) { // no date input
     await submit("random", inputs);
   } else {
-    await submit("random", inputs); // to be added date filter
+    let out = document.querySelector("#random-search .logDisplay");
+    out.innerHTML = "Getting random non-bot message, please wait.. (Attempt 1)";
+    await searchRandom(
+      inputs["user"].value,
+      inputs["string"].value,
+      out,
+      inputs["start-date"].value,
+      inputs["end-date"].value,
+    );
   }
 })
 document.getElementById("case-toggle").addEventListener("click", function (ev) {
