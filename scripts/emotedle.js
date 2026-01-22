@@ -169,6 +169,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         img.src = e;
         img.onload = function () {
             document.getElementById('emote-image-container').innerHTML = `<img id="emote-image" src="${e}" style="height:${img.height * 1.5}px">`;
+            document.getElementById("img-info").innerHTML = `Current size: ${img.width}x${img.height}`;
             stopLoader();
         }
     }
