@@ -151,6 +151,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             container.innerHTML = `<img id="emote-image" src="${e}">`;
             img.onload = () => {
                 document.getElementById("emote-image").style.height = `${img.height * 2}px`;
+                document.getElementById("img-info").innerHTML = `Current size: ${img.width}x${img.height}`;
                 emoteout.removeChild(tmp);
                 stopLoader();
                 enableInput();
